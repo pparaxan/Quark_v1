@@ -1,0 +1,16 @@
+cargo-features = ["edition2024"]
+
+[package]
+name = "crowsa"
+version = "0.0.1"
+description = "A lightweight alternative to Tauri."
+authors = ["Jaydon \"XDR\" Nelson <xxdr@duck.com>"]
+license = "MIT"
+repository = "https://codeberg.org/XDR/Crowsa"
+edition = "2024"
+keywords = [ "web", "gui", "desktop" ]
+categories = [ "gui", "web-programming" ]
+
+[dependencies]
+webview_official = "0.2.0" # Deprecate this in favor of hyaline
+#hyaline = { path = "src/webview" }

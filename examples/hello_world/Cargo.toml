@@ -1,0 +1,9 @@
+cargo-features = ["edition2024"]
+
+[package]
+name = "crowsa-hello_world"
+version = "1.0.0"
+edition = "2024"
+
+[dependencies]
+crowsa = { path = "../../" }

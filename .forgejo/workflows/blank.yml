@@ -1,0 +1,7 @@
+---
+on: push
+jobs:
+  blank:
+    runs-on: docker
+    steps:
+      - run: echo "CI is functioning correctly, and your server is operating without issues, for now."
