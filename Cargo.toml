@@ -7,10 +7,10 @@ description = "A lightweight alternative to Tauri."
 authors = ["Jaydon \"xan\" Nelson <xxdr@duck.com>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://codeberg.org/XDR/Crowsa"
+repository = "https://codeberg.org/xxan/Crowsa"
 edition = "2024"
 keywords = [ "web", "gui", "desktop" ]
 categories = [ "gui", "web-programming" ]
 
 [dependencies]
-hyaline = { path = "src/webview" }
+hyaline = { path = "webview" }

@@ -2,14 +2,14 @@ cargo-features = ["edition2024"]
 
 [package]
 name = "hyaline-bindings"
-version = "0.1.3"
+version = "1.0.0"
 description = "Official Webview FFI bindings."
 authors = [
   "Ngo Iok Ui <wusyong9104@gmail.com>",
   "Jaydon \"xan\" Nelson <xxdr@duck.com>"
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://codeberg.org/XDR/Crowsa/src/branch/master/src/webview/bindings"
+repository = "https://codeberg.org/xxan/Crowsa/src/branch/master/src/webview/bindings"
 edition = "2024"
 
 [build-dependencies]

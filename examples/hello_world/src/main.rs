@@ -2,7 +2,7 @@ use crowsa::{Crowsa, CrowsaError, CrowsaConfig};
 
 fn main() -> Result<(), CrowsaError> {
     let config = CrowsaConfig {
-        content_path: String::from("crowsa_examples"),
+        content_path: String::from("../global_html"),
         window_title: String::from("Hello World"),
         width: 1024,
         height: 768,

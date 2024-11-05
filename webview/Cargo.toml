@@ -12,13 +12,10 @@ authors = [
   "Jaydon \"xan\" Nelson <xxdr@duck.com>"
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://codeberg.org/XDR/Crowsa/src/branch/master/src/webview"
+repository = "https://codeberg.org/xxan/Crowsa/src/branch/master/src/webview"
 edition = "2024"
 keywords = [ "web", "gui", "desktop", "webkit" ]
 categories = [ "gui", "api-bindings" ]
 
 [dependencies]
 hyaline-bindings = { path = "bindings" }
-
-[target.'cfg(windows)'.dependencies]
-winit = "0.30" # fix a bug related to this later whatver blabla
