@@ -1,5 +1,5 @@
 use std::path::PathBuf;
-use webview_official::{Webview, WebviewBuilder, SizeHint};
+use hyaline::{Webview, WebviewBuilder, SizeHint};
 
 #[derive(Debug)]
 pub enum CrowsaError {
