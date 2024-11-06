@@ -12,6 +12,10 @@ jobs:
     container:
       image: 'rustlang/rust:nightly-slim'
     steps:
+      - name: Install Node.js
+        run: apt install nodejs npm
+      - name: Checkout
+        uses: https://code.forgejo.org/actions/checkout@v4
       - name: Report versions
         run: |
           rustc --version
