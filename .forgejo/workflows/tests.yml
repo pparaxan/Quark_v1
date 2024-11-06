@@ -13,7 +13,9 @@ jobs:
       image: 'rustlang/rust:nightly-slim'
     steps:
       - name: Install Node.js
-        run: apt install nodejs npm
+        run: |
+          curl -sL https://deb.nodesource.com/setup_18.x | bash -
+          apt install nodejs
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v4
       - name: Report versions
@@ -21,5 +23,7 @@ jobs:
           rustc --version
           cargo --version
           cargo pkgid
+          node -v
+          npm -v
       - name: Run tests on Crowsa
         run: cargo test -v
