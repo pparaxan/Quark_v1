@@ -10,7 +10,7 @@ jobs:
   tests:
     runs-on: self-hosted
     container:
-      image: 'rustlang/rust:nightly-slim'
+      image: 'rustlang/rust:nightly'
     steps:
       - name: Install Node.js
         run: |
