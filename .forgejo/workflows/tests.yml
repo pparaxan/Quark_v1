@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: |
           curl -sL https://deb.nodesource.com/setup_20.x | bash -
-          apt install nodejs libwebkit2gtk-4.0-dev
+          apt install nodejs libwebkit2gtk-4.0-dev -y
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v4
       - name: Report versions
