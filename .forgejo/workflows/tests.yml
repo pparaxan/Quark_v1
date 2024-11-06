@@ -1,5 +1,4 @@
-name: testing
-
+---
 on:
   pull_request:
   push:
@@ -12,10 +11,10 @@ jobs:
     container:
       image: 'rustlang/rust:nightly'
     steps:
-      - name: Install Node.js
+      - name: Install dependencies
         run: |
           curl -sL https://deb.nodesource.com/setup_20.x | bash -
-          apt install nodejs
+          apt install nodejs libwebkit2gtk-4.0-dev
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v4
       - name: Report versions
@@ -23,7 +22,7 @@ jobs:
           rustc --version
           cargo --version
           cargo pkgid
-          node -v
-          npm -v
+          echo "node $(node -v)
+          echo "npm $(npm -v)"
       - name: Run tests on Crowsa
         run: cargo test -v
