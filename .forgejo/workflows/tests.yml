@@ -22,7 +22,7 @@ jobs:
           rustc --version
           cargo --version
           cargo pkgid
-          echo "node $(node -v)
+          echo "node $(node -v)"
           echo "npm $(npm -v)"
       - name: Run tests on Crowsa
         run: cargo test -v
