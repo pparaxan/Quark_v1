@@ -1,0 +1,21 @@
+name: testing
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  tests:
+    runs-on: self-hosted
+    container:
+      image: 'rustlang/rust:nightly-slim'
+    steps:
+      - name: Report versions
+        run: |
+          rustc --version
+          cargo --version
+          cargo pkgid
+      - name: Run tests on Crowsa
+        run: cargo test -v
