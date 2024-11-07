@@ -16,8 +16,8 @@ categories = [ "gui", "web-programming" ]
 hyaline = { path = "webview" }
 
 [[example]]
-name = "hello_world"
-path = "examples/hello_world.rs"
+name = "basic"
+path = "examples/basic.rs"
 
 [profile.release]
 panic = "abort"

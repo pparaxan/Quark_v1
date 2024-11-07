@@ -7,7 +7,7 @@ fn main() -> Result<(), CrowsaError> {
         width: 1024,
         height: 768,
         debug: true,
-        resizable: true,
+        resizable: 1,
     };
 
     let crowsa = Crowsa::new(config)?;
