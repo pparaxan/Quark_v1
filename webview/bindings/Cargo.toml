@@ -9,7 +9,6 @@ authors = [
   "Jaydon \"xan\" Nelson <xxdr@duck.com>"
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://codeberg.org/xxan/Crowsa/src/branch/master/src/webview/bindings"
 edition = "2024"
 
 [build-dependencies]
