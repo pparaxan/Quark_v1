@@ -2,7 +2,7 @@ cargo-features = ["edition2024"]
 
 [package]
 name = "crowsa"
-version = "0.0.2"
+version = "0.2.0"
 description = "A lightweight alternative to Tauri."
 authors = ["Jaydon \"xan\" Nelson <xxdr@duck.com>"]
 license = "MIT"
