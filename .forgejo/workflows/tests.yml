@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: |
           curl -sL https://deb.nodesource.com/setup_20.x | bash -
-          apt install nodejs libwebkit2gtk-4.0-dev -y
+          apt install nodejs libwebkit2gtk-4.0-dev xorg x11-xserver-utils xvfb -y
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v4
       - name: Report versions
@@ -24,5 +24,10 @@ jobs:
           cargo pkgid
           echo "node $(node -v)"
           echo "npm $(npm -v)"
+      - name: Start virtual X server
+        run: |
+              export DISPLAY=:99
+              Xvfb :99 -screen 0 1280x1024x24 &
+              sleep 2 && echo "xvfb should now be working, continuing..."
       - name: Run tests on Crowsa
         run: cargo test -v
