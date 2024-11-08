@@ -14,7 +14,7 @@ pub struct CrowsaConfig {
     pub width: u32,
     pub height: u32,
     pub debug: bool,
-    pub resizable: bool,
+    pub resizable: u8,
 }
 
 impl Default for CrowsaConfig {
@@ -25,7 +25,7 @@ impl Default for CrowsaConfig {
             width: 800,
             height: 600,
             debug: true,
-            resizable: true,
+            resizable: 3,
         }
     }
 }
@@ -39,8 +39,14 @@ impl Crowsa {
     pub fn new(config: CrowsaConfig) -> Result<Self, CrowsaError> {
         let webview = WebviewBuilder::new()
             .title(&config.window_title)
-            .resize(if config.resizable {
-                SizeHint::NONE
+            .resize(if config.resizable > 0 && config.resizable < 4 {
+                match config.resizable {
+                    0 => SizeHint::NONE,
+                    1 => SizeHint::MIN,
+                    2 => SizeHint::MAX,
+                    3 => SizeHint::FIXED,
+                    _ => SizeHint::FIXED,
+                }
             } else {
                 SizeHint::FIXED
             })

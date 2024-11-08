@@ -72,7 +72,7 @@ mod crowsa_lib {
             width: 1024,
             height: 768,
             debug: false,
-            resizable: false,
+            resizable: 3,
         };
 
         let result = Crowsa::new(config);
