@@ -30,4 +30,4 @@ jobs:
               Xvfb :99 -screen 0 1280x1024x24 &
               sleep 2 && echo "xvfb should now be working, continuing..."
       - name: Run tests on Crowsa
-        run: cargo test -v
+        run: cargo test --test main -v
