@@ -1,4 +1,4 @@
-use crowsa::{Crowsa, CrowsaConfig, CrowsaError};
+use crowsa::prelude::*;
 
 #[cfg(test)]
 mod crowsa_lib {
@@ -66,14 +66,13 @@ mod crowsa_lib {
     fn test_custom_window_config() {
         assert_html_exists();
 
-        let config = CrowsaConfig {
-            content_path: TEST_PATH.to_string(),
-            window_title: "Test Window".to_string(),
-            width: 1024,
-            height: 768,
-            debug: false,
-            resizable: 3,
-        };
+        let config = CrowsaConfig::new()
+            .content_path("TEST_PATH")
+            .window_title("Test Window")
+            .width(1024)
+            .height(768)
+            .debug(false)
+            .resizable(SizeHint::FIXED);
 
         let result = Crowsa::new(config);
         assert!(result.is_ok());
