@@ -1,4 +1,4 @@
-use crowsa::{Crowsa, CrowsaError, CrowsaConfig, SizeHint};
+use crowsa::prelude::*;
 
 fn main() -> Result<(), CrowsaError> {
     // let config = CrowsaConfig {
