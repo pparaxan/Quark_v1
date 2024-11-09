@@ -1,0 +1,10 @@
+{
+  "toolchain": "nightly",
+  "workspace": {
+    "members": [
+      ".",
+      "webview/",
+      "webview/bindings/"
+    ]
+  }
+}
