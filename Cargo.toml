@@ -1,4 +1,4 @@
-# cargo-features = ["edition2024"]
+cargo-features = ["edition2024"]
 
 [package]
 name = "crowsa"
@@ -8,7 +8,7 @@ authors = ["Jaydon \"xan\" Nelson <xxdr@duck.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://codeberg.org/pparaxan/Crowsa"
-edition = "2021"
+edition = "2024"
 keywords = [ "web", "gui", "desktop" ]
 categories = [ "gui", "web-programming" ]
 
