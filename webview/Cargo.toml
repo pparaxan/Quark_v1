@@ -9,12 +9,10 @@ authors = [
   "Daniel Thompson-Yvetot <denjell@sfosc.org>",
   "Tensor Programming <tensordeveloper@gmail.com>",
   "Serge Zaitsev <zaitsev.serge@gmail.com>",
-  "Jaydon \"xan\" Nelson <xxdr@duck.com>"
+  "Jaydon Nelson <xxdr@duck.com>"
 ]
 license = "MIT OR Apache-2.0"
 edition = "2024"
-keywords = [ "web", "gui", "desktop", "webkit" ]
-categories = [ "gui", "api-bindings" ]
 
 [dependencies]
 hyaline-bindings = { path = "bindings" }

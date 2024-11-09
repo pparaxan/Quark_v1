@@ -6,7 +6,7 @@ version = "0.1.3"
 description = "Official Webview FFI bindings."
 authors = [
   "Ngo Iok Ui <wusyong9104@gmail.com>",
-  "Jaydon \"xan\" Nelson <xxdr@duck.com>"
+  "Jaydon Nelson <xxdr@duck.com>"
 ]
 license = "MIT OR Apache-2.0"
 edition = "2024"
