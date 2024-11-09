@@ -11,9 +11,13 @@ pub enum Window {}
 #[repr(i32)]
 #[derive(Debug, Clone, Copy)]
 pub enum SizeHint {
+    /// Width and height are default size
     NONE = 0,
+    /// Width and height are minimum bounds
     MIN = 1,
+    /// Width and height are maximum bounds
     MAX = 2,
+    /// Window size may not be changed by the user
     FIXED = 3,
 }
 
