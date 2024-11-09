@@ -23,10 +23,6 @@ fn main() {
         for path in lib.include_paths {
             build.include(path);
         }
-        // pkg_config::Config::new()
-        //     .atleast_version("3.0")
-        //     .probe("gtk+-3.0")
-        //     .unwrap();
 
         build.file("ext/webview.cc");
     } else {
