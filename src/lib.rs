@@ -17,6 +17,46 @@ pub struct CrowsaConfig {
     pub resizable: u8,
 }
 
+impl CrowsaConfig {
+    pub fn new() -> Self {
+        CrowsaConfig::default()
+    }
+
+    pub fn content_path(mut self, content_path: &str) -> Self {
+        self.content_path = content_path.to_owned(); // TODO: possibility of Box<str>? saves memory
+                                                     // by not having metadata overhead
+        self
+    }
+
+    pub fn window_title(mut self, window_title: &str) -> Self {
+        self.window_title = window_title.to_owned();
+        self
+    }
+
+    pub fn width(mut self, width: u32) -> Self {
+        self.width = width;
+        self
+    }
+
+    pub fn height(mut self, height: u32) -> Self {
+        self.height = height;
+        self
+    }
+
+    // hmm. i want to make it so if this is ever called, it will toggle debug, but the standard
+    // library doesn't do that: see std::fs::OpenOptions
+    pub fn debug(mut self, debug: bool) -> Self {
+        self.debug = debug;
+        self
+    }
+
+    // TODO: use enums cause xandr doesnt know what hes doing
+    pub fn resizable(mut self, resizable: u8) -> Self {
+        self.resizable = resizable;
+        self
+    }
+}
+
 impl Default for CrowsaConfig {
     fn default() -> Self {
         Self {
