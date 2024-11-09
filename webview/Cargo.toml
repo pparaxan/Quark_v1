@@ -2,7 +2,7 @@ cargo-features = ["edition2024"]
 
 [package]
 name = "hyaline"
-version = "0.2.1"
+version = "1.0.0"
 description = "Official Webview Rust bindings."
 authors = [
   "Lucas Fernandes Gonçalves Nogueira <lucas@tauri.studio>",
