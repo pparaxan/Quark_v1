@@ -9,7 +9,7 @@ use hyaline_bindings as sys;
 pub enum Window {}
 
 #[repr(i32)]
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum SizeHint {
     NONE = 0,
     MIN = 1,

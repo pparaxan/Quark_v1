@@ -1,5 +1,7 @@
 use std::path::PathBuf;
-use hyaline::{Webview, WebviewBuilder, SizeHint};
+use hyaline::{Webview, WebviewBuilder};
+
+pub use hyaline::SizeHint;
 
 #[derive(Debug)]
 pub enum CrowsaError {
@@ -14,7 +16,7 @@ pub struct CrowsaConfig {
     pub width: u32,
     pub height: u32,
     pub debug: bool,
-    pub resizable: u8,
+    pub resizable: SizeHint,
 }
 
 impl CrowsaConfig {
@@ -51,7 +53,7 @@ impl CrowsaConfig {
     }
 
     // TODO: use enums cause xandr doesnt know what hes doing
-    pub fn resizable(mut self, resizable: u8) -> Self {
+    pub fn resizable(mut self, resizable: SizeHint) -> Self {
         self.resizable = resizable;
         self
     }
@@ -65,7 +67,7 @@ impl Default for CrowsaConfig {
             width: 800,
             height: 600,
             debug: true,
-            resizable: 3,
+            resizable: SizeHint::FIXED,
         }
     }
 }
@@ -79,17 +81,7 @@ impl Crowsa {
     pub fn new(config: CrowsaConfig) -> Result<Self, CrowsaError> {
         let webview = WebviewBuilder::new()
             .title(&config.window_title)
-            .resize(if config.resizable > 0 && config.resizable < 4 {
-                match config.resizable {
-                    0 => SizeHint::NONE,
-                    1 => SizeHint::MIN,
-                    2 => SizeHint::MAX,
-                    3 => SizeHint::FIXED,
-                    _ => SizeHint::FIXED,
-                }
-            } else {
-                SizeHint::FIXED
-            })
+            .resize(config.resizable)
             .debug(config.debug)
             .build();
 

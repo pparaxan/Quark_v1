@@ -1,4 +1,4 @@
-use crowsa::{Crowsa, CrowsaError, CrowsaConfig};
+use crowsa::{Crowsa, CrowsaError, CrowsaConfig, SizeHint};
 
 fn main() -> Result<(), CrowsaError> {
     // let config = CrowsaConfig {
@@ -11,7 +11,8 @@ fn main() -> Result<(), CrowsaError> {
     // };
     let config = CrowsaConfig::new()
         .content_path("./examples/global_html")
-        .window_title("Hewwo World~!111");
+        .window_title("Hello World")
+        .resizable(SizeHint::MIN);
 
     let crowsa = Crowsa::new(config)?;
     crowsa.run();
