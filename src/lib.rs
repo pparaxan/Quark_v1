@@ -30,12 +30,12 @@ pub enum CrowsaError {
 ///
 /// Also see [`Crowsa`]
 pub struct CrowsaConfig {
-    pub content_path: String,
-    pub window_title: String,
-    pub width: u32,
-    pub height: u32,
-    pub debug: bool,
-    pub resizable: SizeHint,
+    content_path: String,
+    window_title: String,
+    width: u32,
+    height: u32,
+    debug: bool,
+    resizable: SizeHint,
 }
 
 impl CrowsaConfig {
