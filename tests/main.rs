@@ -5,7 +5,7 @@ mod crowsa_lib {
     use super::*;
     use std::path::Path;
 
-    const TEST_PATH: &str = "examples/global_html";
+    const TEST_PATH: &str = "examples/frontend/basic";
 
     fn assert_html_exists() {
         let html_path = Path::new(TEST_PATH).join("index.html");
