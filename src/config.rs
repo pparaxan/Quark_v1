@@ -62,12 +62,6 @@ impl CrowsaConfig {
     /// Sets the `CrowsaConfig.width` value.
     ///
     /// The `width` value determines the width of the webview should render at.
-    ///
-    /// # Platform specific behaviour
-    ///
-    /// Some users may use a tiling window manager, which may not respect these values, and instead
-    /// tile their application, which does not have a size known at compile-time.
-    // FIXME: ignore tiling?
     #[must_use]
     pub fn width(mut self, width: u32) -> Self {
         self.width = width;
@@ -77,11 +71,6 @@ impl CrowsaConfig {
     /// Sets the `CrowsaConfig.height` value.
     ///
     /// The `height` value determines the height of the webview should render at.
-    ///
-    /// # Platform specific behaviour
-    ///
-    /// Some users may use a tiling window manager, which may not respect these values, and instead
-    /// tile their application, which does not have a size known at compile-time.
     #[must_use]
     pub fn height(mut self, height: u32) -> Self {
         self.height = height;
