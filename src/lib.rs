@@ -28,7 +28,7 @@ impl Crowsa {
 
     fn setup(&mut self) -> Result<(), CrowsaError> {
         let current_dir = std::env::current_dir().map_err(|_| CrowsaError::PathError)?;
-        let content_path = PathBuf::from(&self.config.content_path).join("index.html");
+        let content_path = PathBuf::from(&self.config.frontend).join("index.html");
         let full_path = current_dir.join(content_path);
 
         if !full_path.exists() {

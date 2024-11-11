@@ -2,7 +2,7 @@ use crowsa::prelude::*;
 
 fn main() -> Result<(), CrowsaError> {
     let config = CrowsaConfig::new()
-        .content_path("./examples/global_html")
+        .frontend("./examples/global_html")
         .window_title("Hello World")
         .resizable(SizeHint::MIN);
 

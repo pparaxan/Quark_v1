@@ -21,7 +21,7 @@ use hyaline::SizeHint;
 ///
 /// Also see [`Crowsa`]
 pub struct CrowsaConfig {
-    pub(crate) content_path: String,
+    pub(crate) frontend: String,
     pub(crate) window_title: String,
     pub(crate) width: u32,
     pub(crate) height: u32,
@@ -39,13 +39,13 @@ impl CrowsaConfig {
         CrowsaConfig::default()
     }
 
-    /// Sets the `CrowsaConfig.content_path` value.
+    /// Sets the `CrowsaConfig.frontend` value.
     ///
-    /// The `content_path` value determines the relative path to your file in which Crowsa will
+    /// The `frontend` value determines the relative path to your file in which Crowsa will
     /// include your web frontend.
     #[must_use]
-    pub fn content_path(mut self, content_path: &str) -> Self {
-        self.content_path = content_path.to_owned(); // TODO: possibility of Box<str>? saves memory by not having metadata overhead
+    pub fn frontend(mut self, frontend: &str) -> Self {
+        self.frontend = frontend.to_owned(); // TODO: possibility of Box<str>? saves memory by not having metadata overhead
         self
     }
 
@@ -121,7 +121,7 @@ impl CrowsaConfig {
 impl Default for CrowsaConfig {
     fn default() -> Self {
         Self {
-            content_path: String::from("src_crowsa"),
+            frontend: String::from("src_crowsa"),
             window_title: String::from("A Crowsa Application"),
             width: 800,
             height: 600,
