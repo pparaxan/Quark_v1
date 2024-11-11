@@ -115,7 +115,7 @@ impl Default for CrowsaConfig {
             width: 800,
             height: 600,
             debug: true,
-            resizable: SizeHint::FIXED,
+            resizable: SizeHint::MAX,
         }
     }
 }
