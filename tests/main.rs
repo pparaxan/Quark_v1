@@ -9,15 +9,18 @@ mod crowsa_lib {
 
     fn assert_html_exists() {
         let html_path = Path::new(TEST_PATH).join("index.html");
-        assert!(html_path.exists(), "index.html should exist in {}", TEST_PATH);
+        assert!(
+            html_path.exists(),
+            "index.html should exist in {}",
+            TEST_PATH
+        );
     }
 
     #[test]
     fn test_valid_initialization() {
         assert_html_exists();
 
-        let config = CrowsaConfig::new()
-            .content_path(TEST_PATH);
+        let config = CrowsaConfig::new().content_path(TEST_PATH);
 
         let result = Crowsa::new(config);
         assert!(result.is_ok());
@@ -25,8 +28,7 @@ mod crowsa_lib {
 
     #[test]
     fn test_invalid_path() {
-        let config = CrowsaConfig::new()
-            .content_path("invalid");
+        let config = CrowsaConfig::new().content_path("invalid");
 
         let result = Crowsa::new(config);
         assert!(matches!(result, Err(CrowsaError::PathError)));
@@ -36,8 +38,7 @@ mod crowsa_lib {
     fn test_binding() {
         assert_html_exists();
 
-        let config = CrowsaConfig::new()
-            .content_path(TEST_PATH);
+        let config = CrowsaConfig::new().content_path(TEST_PATH);
 
         let mut crowsa = Crowsa::new(config).expect("Failed to create an instance");
         crowsa.bind("test_function", |_, _| {});
@@ -47,8 +48,7 @@ mod crowsa_lib {
     fn test_eval() {
         assert_html_exists();
 
-        let config = CrowsaConfig::new()
-            .content_path(TEST_PATH);
+        let config = CrowsaConfig::new().content_path(TEST_PATH);
 
         let mut crowsa = Crowsa::new(config).expect("Failed to create Crowsa instance");
         crowsa.eval("console.log('test');");
@@ -97,8 +97,7 @@ mod crowsa_lib {
     fn test_multiple_bindings() {
         assert_html_exists();
 
-        let config = CrowsaConfig::new()
-            .content_path(TEST_PATH);
+        let config = CrowsaConfig::new().content_path(TEST_PATH);
 
         let mut crowsa = Crowsa::new(config).expect("Failed to create Crowsa instance");
 
@@ -111,8 +110,7 @@ mod crowsa_lib {
     fn test_multiple_evals() {
         assert_html_exists();
 
-        let config = CrowsaConfig::new()
-            .content_path(TEST_PATH);
+        let config = CrowsaConfig::new().content_path(TEST_PATH);
 
         let mut crowsa = Crowsa::new(config).expect("Failed to create Crowsa instance");
 

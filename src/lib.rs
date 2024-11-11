@@ -1,7 +1,7 @@
 pub mod prelude;
 
+use hyaline::{SizeHint, Webview, WebviewBuilder};
 use std::path::PathBuf;
-use hyaline::{Webview, WebviewBuilder, SizeHint};
 
 #[derive(Debug)]
 pub enum CrowsaError {
@@ -53,7 +53,7 @@ impl CrowsaConfig {
     /// include your web frontend.
     pub fn content_path(mut self, content_path: &str) -> Self {
         self.content_path = content_path.to_owned(); // TODO: possibility of Box<str>? saves memory
-                                                     // by not having metadata overhead
+        // by not having metadata overhead
         self
     }
 
@@ -147,10 +147,7 @@ impl Crowsa {
             .debug(config.debug)
             .build();
 
-        let mut crowsa = Crowsa {
-            webview,
-            config,
-        };
+        let mut crowsa = Crowsa { webview, config };
 
         crowsa.setup()?;
         Ok(crowsa)
