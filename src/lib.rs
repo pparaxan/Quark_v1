@@ -43,6 +43,7 @@ impl CrowsaConfig {
     ///
     /// This method is identical to `CrowsaConfig::default()`, but is included as a matter of
     /// convenience.
+    #[must_use]
     pub fn new() -> Self {
         CrowsaConfig::default()
     }
@@ -51,6 +52,7 @@ impl CrowsaConfig {
     ///
     /// The `content_path` value determines the relative path to your file in which Crowsa will
     /// include your web frontend.
+    #[must_use]
     pub fn content_path(mut self, content_path: &str) -> Self {
         self.content_path = content_path.to_owned(); // TODO: possibility of Box<str>? saves memory
         // by not having metadata overhead
@@ -61,6 +63,7 @@ impl CrowsaConfig {
     ///
     /// The `window_title` value determines the value to give to the underlying operating system
     /// what title to give your application.
+    #[must_use]
     pub fn window_title(mut self, window_title: &str) -> Self {
         self.window_title = window_title.to_owned();
         self
@@ -75,6 +78,7 @@ impl CrowsaConfig {
     /// Some users may use a tiling window manager, which may not respect these values, and instead
     /// tile their application, which does not have a size known at compile-time.
     // FIXME: ignore tiling?
+    #[must_use]
     pub fn width(mut self, width: u32) -> Self {
         self.width = width;
         self
@@ -88,6 +92,7 @@ impl CrowsaConfig {
     ///
     /// Some users may use a tiling window manager, which may not respect these values, and instead
     /// tile their application, which does not have a size known at compile-time.
+    #[must_use]
     pub fn height(mut self, height: u32) -> Self {
         self.height = height;
         self
@@ -102,6 +107,7 @@ impl CrowsaConfig {
     /// - JavaScript logs will be printed to the terminal
     ///
     /// It may be undesirable to leave this on in release mode.
+    #[must_use]
     pub fn debug(mut self, debug: bool) -> Self {
         self.debug = debug;
         self
@@ -115,6 +121,7 @@ impl CrowsaConfig {
     ///
     // TODO: this docstring may not work. link to html resource later
     /// [`SizeHint`]: hyaline::SizeHint
+    #[must_use]
     pub fn resizable(mut self, resizable: SizeHint) -> Self {
         self.resizable = resizable;
         self
