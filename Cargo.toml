@@ -19,6 +19,10 @@ hyaline = { path = "webview" }
 name = "basic"
 path = "examples/basic.rs"
 
+[[example]]
+name = "cazic"
+path = "examples/cazic.rs"
+
 [profile.release]
 panic = "abort"
 codegen-units = 1

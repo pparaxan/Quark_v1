@@ -2,9 +2,11 @@ use crowsa::prelude::*;
 
 fn main() -> Result<(), CrowsaError> {
     let config = CrowsaConfig::new()
-        .frontend("./examples/frontend/basic")
-        .window_title("Hello World")
-        .resizable(SizeHint::FIXED);
+        .frontend("./examples/frontend/cazic")
+        .window_title("Cazic Music Player")
+        .width(800)
+        .height(600)
+        .resizable(SizeHint::MIN);
 
     let crowsa = Crowsa::new(config)?;
     crowsa.run();

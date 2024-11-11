@@ -35,7 +35,9 @@ impl Crowsa {
             return Err(CrowsaError::PathError);
         }
 
-        let uri = format!("file://{}", full_path.display());
+        let uri = format!("file://{}", full_path.display()); // TODO: make it built in the exec?
+        // Like make it doesn't have to depend on a local file
+        println!("{}", full_path.display());
         self.webview.navigate(&uri);
         Ok(())
     }
