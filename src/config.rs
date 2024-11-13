@@ -8,8 +8,8 @@ use hyaline::SizeHint;
 /// ```rust, ignore
 /// # fn main() -> Result<(), CrowsaError> {
 /// let config = CrowsaConfig::new()
-///     .content_path("./examples/global_html")
-///     .window_title("Hello, World!")
+///     .frontend("./path_to_html_folder")
+///     .title("Crowsa!")
 ///     .resizable(SizeHint::MIN);
 ///
 /// // CrowsaConfig is meant to be used with `Crowsa::new`
@@ -22,7 +22,7 @@ use hyaline::SizeHint;
 /// Also see [`Crowsa`]
 pub struct CrowsaConfig {
     pub(crate) frontend: String,
-    pub(crate) window_title: String,
+    pub(crate) title: String,
     pub(crate) width: u32,
     pub(crate) height: u32,
     pub(crate) debug: bool,
@@ -49,13 +49,13 @@ impl CrowsaConfig {
         self
     }
 
-    /// Sets the `CrowsaConfig.window_title` value.
+    /// Sets the `CrowsaConfig.title` value.
     ///
-    /// The `window_title` value determines the value to give to the underlying operating system
+    /// The `title` value determines the value to give to the underlying operating system
     /// what title to give your application.
     #[must_use]
-    pub fn window_title(mut self, window_title: &str) -> Self {
-        self.window_title = window_title.to_owned();
+    pub fn title(mut self, title: &str) -> Self {
+        self.title = title.to_owned();
         self
     }
 
@@ -111,7 +111,7 @@ impl Default for CrowsaConfig {
     fn default() -> Self {
         Self {
             frontend: String::from("src_crowsa"),
-            window_title: String::from("A Crowsa Application"),
+            title: String::from("A Crowsa Application"),
             width: 800,
             height: 600,
             debug: true,
