@@ -15,7 +15,7 @@ pub struct Crowsa {
 impl Crowsa {
     pub fn new(config: CrowsaConfig) -> Result<Self, CrowsaError> {
         let webview = WebviewBuilder::new()
-            .title(&config.window_title)
+            .title(&config.title)
             .resize(config.resizable)
             .debug(config.debug)
             .build();
