@@ -13,7 +13,7 @@ keywords = [ "web", "gui", "desktop" ]
 categories = [ "gui", "web-programming" ]
 
 [dependencies]
-hyaline = { path = "webview" }
+hyaline = { path = "hyaline/" }
 
 [[example]]
 name = "basic"
