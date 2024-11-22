@@ -2,7 +2,6 @@ cargo-features = ["edition2024"]
 
 [package]
 name = "hyaline-bindings"
-version = "1.0.0"
 description = "Official Webview FFI bindings."
 authors = [
   "Ngo Iok Ui <wusyong9104@gmail.com>",
