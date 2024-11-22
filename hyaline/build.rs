@@ -24,7 +24,6 @@ fn main() {
         panic!("Unsupported target, make a issue if you want support for this operating system."); // I wonder if OSes like React, Haiku and Redox has webview...
     }
 
-    println!("cargo:rerun-if-changed=ext/webview.h");
     println!("cargo:rerun-if-changed=ext/webview.cc");
 
     build.compile("webview");
