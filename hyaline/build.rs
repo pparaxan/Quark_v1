@@ -21,7 +21,7 @@ fn main() {
 
         build.file("webview.cc").cpp(true);
     } else {
-        panic!("Unsupported target, make a issue if you want support for this operating system."); // I wonder if OSes like React, Haiku and Redox has webview...
+        panic!("Unsupported target, make a issue if you want support for this operating system.");
     }
 
     println!("cargo:rerun-if-changed=ext/webview.cc");
