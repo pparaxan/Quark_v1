@@ -1,12 +1,12 @@
-use crowsa::prelude::*;
+use quark::prelude::*;
 
-fn main() -> Result<(), CrowsaError> {
-    let config = CrowsaConfig::new()
+fn main() -> Result<(), QuarkError> {
+    let config = QuarkConfig::new()
         .frontend("./examples/frontend/basic")
         .title("Hello World")
         .resizable(SizeHint::FIXED);
 
-    let crowsa = Crowsa::new(config)?;
-    crowsa.run();
+    let quark = Quark::new(config)?;
+    quark.run();
     Ok(())
 }

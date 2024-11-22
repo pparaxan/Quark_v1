@@ -1,13 +1,13 @@
 cargo-features = ["edition2024"]
 
 [package]
-name = "crowsa"
+name = "quark"
 version = "3.0.0"
 description = "A lightweight alternative to Tauri."
 authors = ["Jaydon Nelson <xxdr@duck.com>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://codeberg.org/pparaxan/Crowsa"
+repository = "https://codeberg.org/pparaxan/Quark"
 edition = "2024"
 keywords = [ "web", "gui", "desktop" ]
 categories = [ "gui", "web-programming" ]

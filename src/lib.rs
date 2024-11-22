@@ -2,37 +2,37 @@ pub mod config;
 pub mod error;
 pub mod prelude;
 
-use config::CrowsaConfig;
-use error::CrowsaError;
+use config::QuarkConfig;
+use error::QuarkError;
 use hyaline::{Webview, WebviewBuilder};
 use std::path::PathBuf;
 
-pub struct Crowsa {
+pub struct Quark {
     webview: Webview,
-    config: CrowsaConfig,
+    config: QuarkConfig,
 }
 
-impl Crowsa {
-    pub fn new(config: CrowsaConfig) -> Result<Self, CrowsaError> {
+impl Quark {
+    pub fn new(config: QuarkConfig) -> Result<Self, QuarkError> {
         let webview = WebviewBuilder::new()
             .title(&config.title)
             .resize(config.resizable)
             .debug(config.debug)
             .build();
 
-        let mut crowsa = Crowsa { webview, config };
+        let mut quark = Quark { webview, config };
 
-        crowsa.setup()?;
-        Ok(crowsa)
+        quark.setup()?;
+        Ok(quark)
     }
 
-    fn setup(&mut self) -> Result<(), CrowsaError> {
-        let current_dir = std::env::current_dir().map_err(|_| CrowsaError::PathError)?;
+    fn setup(&mut self) -> Result<(), QuarkError> {
+        let current_dir = std::env::current_dir().map_err(|_| QuarkError::PathError)?;
         let content_path = PathBuf::from(&self.config.frontend).join("index.html");
         let full_path = current_dir.join(content_path);
 
         if !full_path.exists() {
-            return Err(CrowsaError::PathError);
+            return Err(QuarkError::PathError);
         }
 
         let uri = format!("file://{}", full_path.display()); // TODO: make it built in the exec?

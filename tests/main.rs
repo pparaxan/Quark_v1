@@ -1,7 +1,7 @@
-use crowsa::prelude::*;
+use quark::prelude::*;
 
 #[cfg(test)]
-mod crowsa_lib {
+mod quark_lib {
     use super::*;
     use std::{path::Path, thread::sleep};
 
@@ -20,53 +20,53 @@ mod crowsa_lib {
     // fn test_valid_initialization() {
     //     assert_html_exists();
 
-    //     let config = CrowsaConfig::new().frontend(BASIC_EXAMPLE);
+    //     let config = QuarkConfig::new().frontend(BASIC_EXAMPLE);
 
-    //     let result = Crowsa::new(config);
+    //     let result = Quark::new(config);
     //     assert!(result.is_ok());
     // }
 
     // #[test]
     // fn test_invalid_path() {
-    //     let config = CrowsaConfig::new().frontend("invalid");
+    //     let config = QuarkConfig::new().frontend("invalid");
 
-    //     let result = Crowsa::new(config);
-    //     assert!(matches!(result, Err(CrowsaError::PathError)));
+    //     let result = Quark::new(config);
+    //     assert!(matches!(result, Err(QuarkError::PathError)));
     // }
 
     // #[test]
     // fn test_binding() {
     //     assert_html_exists();
 
-    //     let config = CrowsaConfig::new().frontend(BASIC_EXAMPLE);
+    //     let config = QuarkConfig::new().frontend(BASIC_EXAMPLE);
 
-    //     let mut crowsa = Crowsa::new(config).expect("Failed to create an instance");
-    //     crowsa.bind("test_function", |_, _| {});
+    //     let mut quark = Quark::new(config).expect("Failed to create an instance");
+    //     quark.bind("test_function", |_, _| {});
     // }
 
     // #[test]
     // fn eval() {
     //     assert_html_exists();
 
-    //     let config = CrowsaConfig::new().frontend(BASIC_EXAMPLE);
+    //     let config = QuarkConfig::new().frontend(BASIC_EXAMPLE);
 
-    //     let mut crowsa = Crowsa::new(config).expect("Failed to create Crowsa instance");
-    //     crowsa.eval("console.log('test');");
+    //     let mut quark = Quark::new(config).expect("Failed to create Quark instance");
+    //     quark.eval("console.log('test');");
     // }
 
     #[test]
     fn custom_config() {
         assert_html_exists();
 
-        let config = CrowsaConfig::new()
+        let config = QuarkConfig::new()
             .frontend(BASIC_EXAMPLE)
-            .title("CrowsaTestWindowConfig")
+            .title("QuarkTestWindowConfig")
             .width(1024)
             .height(768)
             .debug(false)
             .resizable(SizeHint::FIXED);
 
-        let result = Crowsa::new(config);
+        let result = Quark::new(config);
         assert!(result.is_ok());
     }
 
@@ -82,9 +82,9 @@ mod crowsa_lib {
     #[test]
     fn errors() {
         let errors = [
-            CrowsaError::InitializationFailed,
-            CrowsaError::PathError,
-            CrowsaError::WebviewError,
+            QuarkError::InitializationFailed,
+            QuarkError::PathError,
+            QuarkError::WebviewError,
         ];
 
         for error in &errors {
@@ -97,26 +97,26 @@ mod crowsa_lib {
     // fn test_multiple_bindings() {
     //     assert_html_exists();
 
-    //     let config = CrowsaConfig::new().frontend(BASIC_EXAMPLE);
+    //     let config = QuarkConfig::new().frontend(BASIC_EXAMPLE);
 
-    //     let mut crowsa = Crowsa::new(config).expect("Failed to create Crowsa instance");
+    //     let mut quark = Quark::new(config).expect("Failed to create Quark instance");
 
-    //     crowsa.bind("function1", |_, _| {});
-    //     crowsa.bind("function2", |_, _| {});
-    //     crowsa.bind("function3", |_, _| {});
+    //     quark.bind("function1", |_, _| {});
+    //     quark.bind("function2", |_, _| {});
+    //     quark.bind("function3", |_, _| {});
     // }
 
     // #[test]
     // fn test_multiple_evals() {
     //     assert_html_exists();
 
-    //     let config = CrowsaConfig::new().frontend(BASIC_EXAMPLE);
+    //     let config = QuarkConfig::new().frontend(BASIC_EXAMPLE);
 
-    //     let mut crowsa = Crowsa::new(config).expect("Failed to create Crowsa instance");
+    //     let mut quark = Quark::new(config).expect("Failed to create Quark instance");
 
     //     // Test that multiple evals don't panic
-    //     crowsa.eval("console.log('test1');");
-    //     crowsa.eval("console.log('test2');");
-    //     crowsa.eval("console.log('test3');");
+    //     quark.eval("console.log('test1');");
+    //     quark.eval("console.log('test2');");
+    //     quark.eval("console.log('test3');");
     // }
 }

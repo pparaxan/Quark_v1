@@ -3,13 +3,13 @@ on:
   pull_request:
   push:
     branches:
-      - 'master'
+      - "master"
 
 jobs:
   tests:
     runs-on: self-hosted
     container:
-      image: 'rustlang/rust:nightly'
+      image: "rustlang/rust:nightly"
     steps:
       - name: Install dependencies
         run: |
@@ -26,8 +26,8 @@ jobs:
           echo "npm $(npm -v)"
       - name: Start virtual X server
         run: |
-              export DISPLAY=:99
-              Xvfb :99 -screen 0 1280x1024x24 &
-              sleep 2 && echo "xvfb should now be working, continuing..."
-      - name: Run tests on Crowsa
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1280x1024x24 &
+          sleep 2 && echo "xvfb should now be working, continuing..."
+      - name: Run tests on Quark
         run: cargo test --test main -v

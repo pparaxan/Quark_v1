@@ -1,6 +1,6 @@
-//! # The Crowsa prelude
+//! # The Quark prelude
 //!
-//! This prelude contains the bare essentals to get a Crowsa project up and going. Use it with `use crowsa::prelude::*;` at the top of your `main.rs` file!
+//! This prelude contains the bare essentals to get a Quark project up and going. Use it with `use Quark::prelude::*;` at the top of your `main.rs` file!
 
-pub use crate::{Crowsa, config::CrowsaConfig, error::CrowsaError};
+pub use crate::{Quark, config::QuarkConfig, error::QuarkError};
 pub use hyaline::SizeHint;

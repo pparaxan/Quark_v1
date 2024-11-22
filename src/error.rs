@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub enum CrowsaError {
+pub enum QuarkError {
     InitializationFailed,
     PathError,
     WebviewError,

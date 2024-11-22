@@ -1,26 +1,26 @@
 use hyaline::SizeHint;
 
 
-/// Defines the primary configuration for a Crowsa application.
+/// Defines the primary configuration for a Quark application.
 ///
 /// # Examples
 ///
 /// ```rust, ignore
-/// # fn main() -> Result<(), CrowsaError> {
-/// let config = CrowsaConfig::new()
+/// # fn main() -> Result<(), QuarkError> {
+/// let config = QuarkConfig::new()
 ///     .frontend("./path_to_html_folder")
-///     .title("Crowsa!")
+///     .title("Quark!")
 ///     .resizable(SizeHint::MIN);
 ///
-/// // CrowsaConfig is meant to be used with `Crowsa::new`
-/// let crowsa = Crowsa::new(config)?;
-/// crowsa.run();
+/// // QuarkConfig is meant to be used with `Quark::new`
+/// let quark = Quark::new(config)?;
+/// quark.run();
 /// # Ok(())
 /// # }
 /// ```
 ///
-/// Also see [`Crowsa`]
-pub struct CrowsaConfig {
+/// Also see [`Quark`]
+pub struct QuarkConfig {
     pub(crate) frontend: String,
     pub(crate) title: String,
     pub(crate) width: u32,
@@ -29,19 +29,19 @@ pub struct CrowsaConfig {
     pub(crate) resizable: SizeHint,
 }
 
-impl CrowsaConfig {
-    /// Creates a new default `CrowsaConfig`.
+impl QuarkConfig {
+    /// Creates a new default `QuarkConfig`.
     ///
-    /// This method is identical to `CrowsaConfig::default()`, but is included as a matter of
+    /// This method is identical to `QuarkConfig::default()`, but is included as a matter of
     /// convenience.
     #[must_use]
     pub fn new() -> Self {
-        CrowsaConfig::default()
+        QuarkConfig::default()
     }
 
-    /// Sets the `CrowsaConfig.frontend` value.
+    /// Sets the `QuarkConfig.frontend` value.
     ///
-    /// The `frontend` value determines the relative path to your file in which Crowsa will
+    /// The `frontend` value determines the relative path to your file in which Quark will
     /// include your web frontend.
     #[must_use]
     pub fn frontend(mut self, frontend: &str) -> Self {
@@ -49,7 +49,7 @@ impl CrowsaConfig {
         self
     }
 
-    /// Sets the `CrowsaConfig.title` value.
+    /// Sets the `QuarkConfig.title` value.
     ///
     /// The `title` value determines the value to give to the underlying operating system
     /// what title to give your application.
@@ -59,7 +59,7 @@ impl CrowsaConfig {
         self
     }
 
-    /// Sets the `CrowsaConfig.width` value.
+    /// Sets the `QuarkConfig.width` value.
     ///
     /// The `width` value determines the width of the webview should render at.
     #[must_use]
@@ -68,7 +68,7 @@ impl CrowsaConfig {
         self
     }
 
-    /// Sets the `CrowsaConfig.height` value.
+    /// Sets the `QuarkConfig.height` value.
     ///
     /// The `height` value determines the height of the webview should render at.
     #[must_use]
@@ -79,7 +79,7 @@ impl CrowsaConfig {
 
     // hmm. i want to make it so if this is ever called, it will toggle debug, but the standard
     // library doesn't do that: see std::fs::OpenOptions
-    /// Sets the `CrowsaConfig.debug` value.
+    /// Sets the `QuarkConfig.debug` value.
     ///
     /// The `debug` value makes debugging your frontend application much easier in two ways:
     /// - Allows a feature of the webview called "inspect element" to be opened;
@@ -92,7 +92,7 @@ impl CrowsaConfig {
         self
     }
 
-    /// Sets the `CrowsaConfig.resizable` value.
+    /// Sets the `QuarkConfig.resizable` value.
     ///
     /// The `resizable` value determines the resizing conditions for the frontend application.
     ///
@@ -107,11 +107,11 @@ impl CrowsaConfig {
     }
 }
 
-impl Default for CrowsaConfig {
+impl Default for QuarkConfig {
     fn default() -> Self {
         Self {
-            frontend: String::from("src_crowsa"),
-            title: String::from("A Crowsa Application"),
+            frontend: String::from("src_quark"),
+            title: String::from("Quark Application"),
             width: 800,
             height: 600,
             debug: true,
