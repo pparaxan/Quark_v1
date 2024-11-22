@@ -22,13 +22,6 @@ dependencies = [
 name = "hyaline"
 version = "1.0.0"
 dependencies = [
- "hyaline-bindings",
-]
-
-[[package]]
-name = "hyaline-bindings"
-version = "0.0.0"
-dependencies = [
  "cc",
  "pkg-config",
 ]

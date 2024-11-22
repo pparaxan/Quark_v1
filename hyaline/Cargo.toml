@@ -9,10 +9,12 @@ authors = [
   "Daniel Thompson-Yvetot <denjell@sfosc.org>",
   "Tensor Programming <tensordeveloper@gmail.com>",
   "Serge Zaitsev <zaitsev.serge@gmail.com>",
+  "Ngo Iok Ui <wusyong9104@gmail.com>",
   "Jaydon Nelson <xxdr@duck.com>"
 ]
 license = "MIT OR Apache-2.0"
 edition = "2024"
 
-[dependencies]
-hyaline-bindings = { path = "bindings" }
+[build-dependencies]
+cc = "1.1"
+pkg-config = "0.3"
