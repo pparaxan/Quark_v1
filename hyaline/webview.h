@@ -34,8 +34,7 @@ WEBVIEW_API void webview_terminate(webview_t w);
 
 // Posts a function to be executed on the main thread. You normally do not need
 // to call this function, unless you want to tweak the native window.
-WEBVIEW_API void
-webview_dispatch(webview_t w, void (*fn)(webview_t w, void *arg), void *arg);
+WEBVIEW_API void webview_dispatch(webview_t w, void (*fn)(webview_t w, void *arg), void *arg);
 
 // Returns a native window handle pointer. When using GTK backend the pointer
 // is GtkWindow pointer, when using Cocoa backend the pointer is NSWindow
