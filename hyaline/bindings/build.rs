@@ -5,13 +5,8 @@ fn main() {
 
     let target = env::var("TARGET").unwrap();
 
-    build
-        .cpp(true)
-        .include("ext/webview.h")
-        .flag_if_supported("-w");
-
     if target.contains("apple") {
-        build.file("ext/webview.cc");
+        build.file("webview.cc").cpp(true);
         println!("cargo:rustc-link-lib=framework=Cocoa");
         println!("cargo:rustc-link-lib=framework=WebKit");
     } else if target.contains("linux") || target.contains("bsd") {
@@ -24,7 +19,7 @@ fn main() {
             build.include(path);
         }
 
-        build.file("ext/webview.cc");
+        build.file("webview.cc").cpp(true);
     } else {
         panic!("Unsupported platform, make a PR if you want support for your OS"); // I wonder if OSes like React, Haiku and Redox has webview...
     }
