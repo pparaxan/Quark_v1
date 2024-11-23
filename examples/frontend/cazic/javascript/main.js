@@ -1,6 +1,6 @@
-const playbackState = document.getElementById('playbackState');
-const titleElement = document.getElementById('title');
-const artistElement = document.getElementById('artist');
+const playbackState = document.getElementById("playbackState");
+const titleElement = document.getElementById("title");
+const artistElement = document.getElementById("artist");
 const audio = new Audio();
 
 let queue = [];
@@ -39,7 +39,7 @@ function togglePlaybackState() {
 }
 
 function updatePlaybackIcon() {
-    playbackState.className = audio.paused ? 'bx bx-play-circle bx-md' : 'bx bx-pause-circle bx-md';
+    playbackState.className = audio.paused ? "bx bx-play-circle bx-md" : "bx bx-pause-circle bx-md";
 }
 
 function playNextTrack() {
@@ -58,7 +58,7 @@ function playPrevTrack() {
 
 function toggleRepeat() {
     isRepeat = !isRepeat;
-    repeat.classList.toggle('icon-default');
+    repeat.classList.toggle("icon-default");
 }
 
 function toggleShuffle() {
@@ -73,28 +73,28 @@ function toggleShuffle() {
 }
 
 function toggleMetadataVisibility() {
-    const ui = document.querySelector('.metadata');
+    const ui = document.querySelector(".metadata");
     if (queue.length === 0) {
-        ui.style.display = 'none';
+        ui.style.display = "none";
     } else {
-        ui.style.display = 'flex';
+        ui.style.display = "flex";
     }
 }
 
 function updateMetadata() {
     const currentTrack = queue[currentIndex];
-    const albumArtElement = document.getElementById('album-art');
-    const titleElement = document.getElementById('song-title');
-    const artistElement = document.getElementById('song-artist');
+    const albumArtElement = document.getElementById("album-art");
+    const titleElement = document.getElementById("song-title");
+    const artistElement = document.getElementById("song-artist");
 
     if (currentTrack.image) {
         albumArtElement.src = currentTrack.image;
     } else {
-        albumArtElement.src = '../../icons/Cazic/Default_Artwork.jpg';
+        albumArtElement.src = "../../icons/Cazic/Default_Artwork.jpg";
     }
 
-    titleElement.textContent = currentTrack.title || 'Unknown Title';
-    artistElement.textContent = currentTrack.artist || 'Unknown Artist';
+    titleElement.textContent = currentTrack.title || "Unknown Title";
+    artistElement.textContent = currentTrack.artist || "Unknown Artist";
 
     toggleMetadataVisibility();
 }

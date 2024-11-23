@@ -1,26 +1,26 @@
-const progressBar = document.getElementById('progress-bar');
-const repeat = document.getElementById('repeat-button');
-const shuffle = document.getElementById('shuffle-button');
-const volumeBar = document.getElementById('volume-bar');
+const progressBar = document.getElementById("progress-bar");
+const repeat = document.getElementById("repeat-button");
+const shuffle = document.getElementById("shuffle-button");
+const volumeBar = document.getElementById("volume-bar");
 
 function handleKeydown(event) {
     switch (event.key) {
-        case ' ':
+        case " ":
             togglePlaybackState();
             break;
-        case 'ArrowLeft':
+        case "ArrowLeft":
             audio.currentTime -= 5;
             break;
-        case 'ArrowRight':
+        case "ArrowRight":
             audio.currentTime += 5;
             break;
-        case 'f':
+        case "f":
             toggleFullscreen();
             break;
-        case 'r':
+        case "r":
             toggleRepeat();
             break;
-        case 's':
+        case "s":
             toggleShuffle();
             break;
         default:
@@ -28,7 +28,7 @@ function handleKeydown(event) {
     }
 }
 
-audio.addEventListener('ended', () => {
+audio.addEventListener("ended", () => {
     updatePlaybackIcon();
     if (isRepeat) {
         playAudio(currentIndex);
@@ -45,7 +45,7 @@ audio.addEventListener('ended', () => {
     }
 });
 
-audio.addEventListener('timeupdate', function() {
+audio.addEventListener("timeupdate", function () {
     if (audio.duration !== 0) {
         const position = (audio.currentTime / audio.duration) * 100;
         progressBar.value = position;
@@ -53,15 +53,17 @@ audio.addEventListener('timeupdate', function() {
 });
 
 // document.addEventListener('contextmenu', event => event.preventDefault()); // Disables right click
-document.addEventListener('keydown', handleKeydown);
-input.addEventListener('change', handleFileSelect);
-fileSelectButton.addEventListener('click', () => input.click());
+document.addEventListener("keydown", handleKeydown);
+input.addEventListener("change", handleFileSelect);
+fileSelectButton.addEventListener("click", () => input.click());
 
-progressBar.addEventListener('click', e => {
+progressBar.addEventListener("click", (e) => {
     const clickPosition = e.clientX - progressBar.getBoundingClientRect().left;
     const newPosition = clickPosition / progressBar.offsetWidth;
     audio.currentTime = newPosition * audio.duration;
 });
 
-volumeBar.addEventListener('input', function() {audio.volume = volumeBar.value});
-document.addEventListener('DOMContentLoaded', toggleMetadataVisibility);
+volumeBar.addEventListener("input", function () {
+    audio.volume = volumeBar.value;
+});
+document.addEventListener("DOMContentLoaded", toggleMetadataVisibility);
