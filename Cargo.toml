@@ -16,8 +16,8 @@ categories = [ "gui", "web-programming" ]
 hyaline = { path = "hyaline/" }
 
 [[example]]
-name = "basic"
-path = "examples/basic.rs"
+name = "helloworld"
+path = "examples/helloworld.rs"
 
 [profile.release]
 panic = "abort"
