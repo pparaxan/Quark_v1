@@ -3,7 +3,7 @@ cargo-features = ["edition2024"]
 [package]
 name = "quark"
 version = "3.0.0"
-description = "A lightweight alternative to Tauri."
+description = "A lightweight alternative to Electron."
 authors = ["Jaydon Nelson <xxdr@duck.com>"]
 license = "MIT"
 readme = "README.md"
