@@ -6,7 +6,9 @@ pub struct WebviewBuilder<'a> {
     url: Option<&'a str>,
     init: Option<&'a str>,
     eval: Option<&'a str>,
-    size: (usize, usize, SizeHint),
+    width: usize,
+    height: usize,
+    resize: SizeHint,
     debug: bool,
     dispatch: Option<Box<dyn FnOnce(&mut Webview) + Send + 'static>>,
     window: Option<&'a mut Window>,
@@ -48,17 +50,17 @@ impl<'a> WebviewBuilder<'a> {
     }
 
     pub fn width(mut self, width: usize) -> Self {
-        self.size.0 = width;
+        self.width = width;
         self
     }
 
     pub fn height(mut self, height: usize) -> Self {
-        self.size.1 = height;
+        self.height = height;
         self
     }
 
     pub fn resize(mut self, hint: SizeHint) -> Self {
-        self.size.2 = hint;
+        self.resize = hint;
         self
     }
 
@@ -88,7 +90,7 @@ impl<'a> WebviewBuilder<'a> {
             w.eval(eval);
         }
 
-        w.set_size(self.size.0 as i32, self.size.1 as i32, self.size.2);
+        w.set_size(self.width as u16, self.height as u16, self.resize);
 
         if let Some(f) = self.dispatch {
             w.dispatch(f);

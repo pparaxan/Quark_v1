@@ -22,8 +22,8 @@ use hyaline::SizeHint;
 pub struct QuarkConfig {
     pub(crate) frontend: String,
     pub(crate) title: String,
-    pub(crate) width: u32,
-    pub(crate) height: u32,
+    pub(crate) width: usize,
+    pub(crate) height: usize,
     pub(crate) resizable: SizeHint,
 }
 
@@ -61,7 +61,7 @@ impl QuarkConfig {
     ///
     /// The `width` value determines the width of the webview should render at.
     #[must_use]
-    pub fn width(mut self, width: u32) -> Self {
+    pub fn width(mut self, width: usize) -> Self {
         self.width = width;
         self
     }
@@ -70,7 +70,7 @@ impl QuarkConfig {
     ///
     /// The `height` value determines the height of the webview should render at.
     #[must_use]
-    pub fn height(mut self, height: u32) -> Self {
+    pub fn height(mut self, height: usize) -> Self {
         self.height = height;
         self
     }

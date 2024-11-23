@@ -1,6 +1,6 @@
 pub use builder::WebviewBuilder;
 pub use webview::{SizeHint, Webview, Window};
-use std::os::raw::{c_char, c_int, c_void};
+use std::os::raw::{c_char, c_int, c_ushort, c_void};
 pub type DispatchFn = extern "C" fn(webview: webview_t, arg: *mut c_void);
 pub type BindFn = extern "C" fn(seq: *const c_char, req: *const c_char, arg: *mut c_void);
 
@@ -25,7 +25,7 @@ unsafe extern "C" {
 
     pub unsafe fn webview_set_title(w: webview_t, title: *const c_char);
 
-    pub unsafe fn webview_set_size(w: webview_t, width: c_int, height: c_int, hints: c_int);
+    pub unsafe fn webview_set_size(w: webview_t, width: c_ushort, height: c_ushort, hints: c_int);
 
     pub unsafe fn webview_navigate(w: webview_t, url: *const c_char);
 

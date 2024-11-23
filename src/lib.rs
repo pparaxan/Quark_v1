@@ -19,6 +19,8 @@ impl Quark {
     pub fn new(config: QuarkConfig) -> Result<Self, QuarkError> {
         let webview = WebviewBuilder::new()
             .title(&config.title)
+            .width(config.width)
+            .height(config.height)
             .resize(config.resizable)
             .debug(if BUILDTYPE { true } else { false })
             .build();

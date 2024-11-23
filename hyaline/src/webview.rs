@@ -80,7 +80,7 @@ impl Webview {
         unsafe { bindings::webview_set_title(*self.inner, c_title.as_ptr()) }
     }
 
-    pub fn set_size(&mut self, width: i32, height: i32, hints: SizeHint) {
+    pub fn set_size(&mut self, width: u16, height: u16, hints: SizeHint) {
         unsafe { bindings::webview_set_size(*self.inner, width, height, hints as i32) }
     }
 
