@@ -7,6 +7,9 @@ use error::QuarkError;
 use hyaline::{Webview, WebviewBuilder};
 use std::path::PathBuf;
 
+#[cfg_attr(debug_assertions, allow(dead_code))]
+const BUILDTYPE: bool = cfg!(debug_assertions);
+
 pub struct Quark {
     webview: Webview,
     config: QuarkConfig,
@@ -17,7 +20,7 @@ impl Quark {
         let webview = WebviewBuilder::new()
             .title(&config.title)
             .resize(config.resizable)
-            .debug(config.debug)
+            .debug(if BUILDTYPE {true} else {false})
             .build();
 
         let mut quark = Quark { webview, config };

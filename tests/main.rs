@@ -63,7 +63,6 @@ mod quark_lib {
             .title("QuarkTestWindowConfig")
             .width(1024)
             .height(768)
-            .debug(false)
             .resizable(SizeHint::FIXED);
 
         let result = Quark::new(config);

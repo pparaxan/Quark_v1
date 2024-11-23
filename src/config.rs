@@ -25,7 +25,6 @@ pub struct QuarkConfig {
     pub(crate) title: String,
     pub(crate) width: u32,
     pub(crate) height: u32,
-    pub(crate) debug: bool,
     pub(crate) resizable: SizeHint,
 }
 
@@ -77,21 +76,6 @@ impl QuarkConfig {
         self
     }
 
-    // hmm. i want to make it so if this is ever called, it will toggle debug, but the standard
-    // library doesn't do that: see std::fs::OpenOptions
-    /// Sets the `QuarkConfig.debug` value.
-    ///
-    /// The `debug` value makes debugging your frontend application much easier in two ways:
-    /// - Allows a feature of the webview called "inspect element" to be opened;
-    /// - JavaScript logs will be printed to the terminal
-    ///
-    /// It may be undesirable to leave this on in release mode.
-    #[must_use]
-    pub fn debug(mut self, debug: bool) -> Self {
-        self.debug = debug;
-        self
-    }
-
     /// Sets the `QuarkConfig.resizable` value.
     ///
     /// The `resizable` value determines the resizing conditions for the frontend application.
@@ -114,7 +98,6 @@ impl Default for QuarkConfig {
             title: String::from("Quark Application"),
             width: 800,
             height: 600,
-            debug: true,
             resizable: SizeHint::MAX,
         }
     }
