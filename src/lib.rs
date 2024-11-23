@@ -22,7 +22,7 @@ impl Quark {
             .width(config.width)
             .height(config.height)
             .resize(config.resizable)
-            .debug(if BUILDTYPE { true } else { false })
+            .debug(BUILDTYPE)
             .build();
 
         let mut quark = Quark { webview, config };
