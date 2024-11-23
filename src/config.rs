@@ -1,6 +1,5 @@
 use hyaline::SizeHint;
 
-
 /// Defines the primary configuration for a Quark application.
 ///
 /// # Examples
