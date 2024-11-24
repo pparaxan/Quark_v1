@@ -5,10 +5,16 @@ pub mod prelude;
 use config::QuarkConfig;
 use error::QuarkError;
 use hyaline::{Webview, WebviewBuilder};
-use std::path::PathBuf;
+use std::{str, path::{PathBuf, Path}};
+use rust_embed::RustEmbed;
 
 #[cfg_attr(debug_assertions, allow(dead_code))]
 const BUILDTYPE: bool = cfg!(debug_assertions);
+
+
+#[derive(RustEmbed)]
+#[folder = "$CARGO_MANIFEST_DIR"]
+struct Asset;
 
 pub struct Quark {
     webview: Webview,
@@ -32,17 +38,14 @@ impl Quark {
     }
 
     fn setup(&mut self) -> Result<(), QuarkError> {
-        let current_dir = std::env::current_dir().map_err(|_| QuarkError::PathError)?;
-        let content_path = PathBuf::from(&self.config.frontend).join("index.html");
-        let full_path = current_dir.join(content_path);
+        let index_html_path = format!("{}/index.html", self.config.frontend);
+        let index_html = Asset::get(&index_html_path)
+            .ok_or(QuarkError::RustEmbedAssetNotFoundError)?;
 
-        if !full_path.exists() {
-            return Err(QuarkError::PathError);
-        }
+        let html_content = String::from_utf8(index_html.data.to_vec())
+            .map_err(|_| QuarkError::RustEmbedAssetError)?;
 
-        let uri = format!("file://{}", full_path.display()); // TODO: make it built in the exec?
-        // Like make it doesn't have to depend on a local file
-        self.webview.navigate(&uri);
+        self.webview.set_html(&html_content); // just uses `self.webview.dispatch` as the backend
         Ok(())
     }
 

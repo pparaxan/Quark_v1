@@ -23,6 +23,8 @@ unsafe extern "C" {
 
     pub unsafe fn webview_get_window(w: webview_t) -> *mut c_void;
 
+    pub unsafe fn webview_set_html(w: webview_t, html: *const c_char);
+
     pub unsafe fn webview_set_title(w: webview_t, title: *const c_char);
 
     pub unsafe fn webview_set_size(w: webview_t, width: c_ushort, height: c_ushort, hints: c_int);

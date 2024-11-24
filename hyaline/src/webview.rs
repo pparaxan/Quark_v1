@@ -88,6 +88,17 @@ impl Webview {
         unsafe { bindings::webview_get_window(*self.inner) as *mut Window }
     }
 
+    pub fn set_html(&mut self, html: &str) {
+        let html = html.to_string();
+
+        self.dispatch(move |wv| {
+            let c_html = CString::new(html).expect("Failed to convert HTML");
+            unsafe {
+                bindings::webview_set_html(*wv.inner, c_html.as_ptr());
+            }
+        });
+    }
+
     pub fn navigate(&mut self, url: &str) {
         self.url = url.to_string();
     }
