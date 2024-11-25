@@ -5,17 +5,14 @@ pub mod prelude;
 use config::QuarkConfig;
 use error::QuarkError;
 use hyaline::{Webview, WebviewBuilder};
-use std::{str, path::{PathBuf, Path}};
-use rust_embed::RustEmbed;
+use std::{str, path::Path};
+use include_dir::{Dir, include_dir};
 
 #[cfg_attr(debug_assertions, allow(dead_code))]
 const BUILDTYPE: bool = cfg!(debug_assertions);
+static QUARKFOLDER: Dir = include_dir!("$CARGO_MANIFEST_DIR/src_quark");
 
-
-#[derive(RustEmbed)]
-#[folder = "$CARGO_MANIFEST_DIR"]
-struct Asset;
-
+#[allow(dead_code)]
 pub struct Quark {
     webview: Webview,
     config: QuarkConfig,
@@ -38,14 +35,13 @@ impl Quark {
     }
 
     fn setup(&mut self) -> Result<(), QuarkError> {
-        let index_html_path = format!("{}/index.html", self.config.frontend);
-        let index_html = Asset::get(&index_html_path)
-            .ok_or(QuarkError::RustEmbedAssetNotFoundError)?;
+        let index_html = Path::new("index.html");
+        let index_path = QUARKFOLDER.get_file(index_html)
+            .ok_or(QuarkError::RustEmbedAssetNotFoundError)?
+            .contents_utf8()
+            .ok_or(QuarkError::RustEmbedAssetError)?;
 
-        let html_content = String::from_utf8(index_html.data.to_vec())
-            .map_err(|_| QuarkError::RustEmbedAssetError)?;
-
-        self.webview.set_html(&html_content); // just uses `self.webview.dispatch` as the backend
+        self.webview.set_html(index_path); // just uses `self.webview.dispatch` as the backend
         Ok(())
     }
 

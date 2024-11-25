@@ -7,8 +7,9 @@ use hyaline::SizeHint;
 /// ```rust, ignore
 /// # fn main() -> Result<(), QuarkError> {
 /// let config = QuarkConfig::new()
-///     .frontend("./path_to_html_folder")
 ///     .title("Quark!")
+///     .width: 800,
+///     .height: 600,
 ///     .resizable(SizeHint::MIN);
 ///
 /// // QuarkConfig is meant to be used with `Quark::new`
@@ -20,7 +21,6 @@ use hyaline::SizeHint;
 ///
 /// Also see [`Quark`]
 pub struct QuarkConfig {
-    pub(crate) frontend: String,
     pub(crate) title: String,
     pub(crate) width: usize,
     pub(crate) height: usize,
@@ -35,16 +35,6 @@ impl QuarkConfig {
     #[must_use]
     pub fn new() -> Self {
         QuarkConfig::default()
-    }
-
-    /// Sets the `QuarkConfig.frontend` value.
-    ///
-    /// The `frontend` value determines the relative path to your file in which Quark will
-    /// include your web frontend.
-    #[must_use]
-    pub fn frontend(mut self, frontend: &str) -> Self {
-        self.frontend = frontend.to_owned(); // TODO: possibility of Box<str>? saves memory by not having metadata overhead
-        self
     }
 
     /// Sets the `QuarkConfig.title` value.
@@ -77,7 +67,7 @@ impl QuarkConfig {
 
     /// Sets the `QuarkConfig.resizable` value.
     ///
-    /// The `resizable` value determines the resizing conditions for the frontend application.
+    /// The `resizable` value determines the resizing conditions for the Quark application.
     ///
     /// Also see [`SizeHint`]
     ///
@@ -93,7 +83,6 @@ impl QuarkConfig {
 impl Default for QuarkConfig {
     fn default() -> Self {
         Self {
-            frontend: String::from("src_quark"),
             title: String::from("Quark Application"),
             width: 800,
             height: 600,
