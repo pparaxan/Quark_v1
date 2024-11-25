@@ -1,10 +1,11 @@
+pub mod prelude;
 pub mod config;
 pub mod error;
-pub mod prelude;
+pub mod webview;
 
 use config::QuarkConfig;
 use error::QuarkError;
-use hyaline::{Webview, WebviewBuilder};
+use webview::{Webview, WebviewBuilder};
 use std::{str, path::Path};
 use include_dir::{Dir, include_dir};
 

@@ -373,10 +373,10 @@ inline std::string json_parse(const std::string &s, const std::string &key,
 // webkit2gtk-4.1 libraries. Proper compiler flags can be retrieved via:
 //
 //   pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.1
-//   ^ THIS IS ALL WRONG (fornowatleast), IT'S 4.0
+//
 // ====================================================================
 //
-#include <JavaScriptCore/JavaScript.h>
+#include <JavaScriptCore/JavaScript.h> // even if you have webkit2gtk-4.x installed, this will error out.
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
 

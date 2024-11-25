@@ -1,4 +1,4 @@
-use crate::{SizeHint, Webview, Window};
+use crate::webview::{SizeHint, Webview, Window};
 
 #[derive(Default)]
 pub struct WebviewBuilder<'a> {
