@@ -1,5 +1,12 @@
 cargo-features = ["edition2024"]
 
+# format:
+#
+# package
+# dependencies
+# profiles
+# examples
+
 [package]
 name = "quark"
 version = "3.0.0"
@@ -21,10 +28,6 @@ cc = "1.2.1"
 [target.'cfg(any(target_os = "linux", target_family = "bsd"))'.build-dependencies]
 pkg-config = "0.3.31"
 
-[[example]]
-name = "helloworld"
-path = "examples/helloworld.rs"
-
 [profile.release]
 panic = "abort"
 codegen-units = 1
@@ -32,3 +35,7 @@ lto = true
 incremental = false
 opt-level = "s"
 strip = true
+
+[[example]]
+name = "helloworld"
+path = "examples/helloworld.rs"
