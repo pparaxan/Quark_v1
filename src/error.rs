@@ -4,5 +4,6 @@ pub enum QuarkError {
     PathError,
     WebviewError,
     RustEmbedAssetError,
-    RustEmbedAssetNotFoundError
+    RustEmbedAssetNotFoundError,
+    ServerError,
 }

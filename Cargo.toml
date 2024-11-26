@@ -4,6 +4,7 @@ cargo-features = ["edition2024"]
 #
 # package
 # dependencies
+# features
 # profiles
 # examples
 
@@ -21,6 +22,7 @@ categories = [ "gui", "web-programming" ]
 
 [dependencies]
 include_dir = "0.7.4"
+tiny_http = "0.12.0"
 
 [build-dependencies]
 cc = "1.2.1"
