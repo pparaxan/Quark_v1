@@ -29,9 +29,10 @@ pub fn parse_args() -> Args {
                 println!("Error: This argument isn't complete!");
                 std::process::exit(1);
             }
-            other => eprintln!(
-                "'{other}' is an unknown argument silly, do '--help' to list the commands."
-            ),
+            other => {
+                eprintln!("'{other}' is an unknown argument silly. Use '--help' to list the commands.");
+                std::process::exit(0);
+            }
         }
     }
     parsed_args
