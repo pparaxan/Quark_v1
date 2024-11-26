@@ -31,7 +31,7 @@ pub fn parse_args() -> Args {
             }
             other => {
                 eprintln!("'{other}' is an unknown argument silly. Use '--help' to list the commands.");
-                std::process::exit(0);
+                std::process::exit(1);
             }
         }
     }
