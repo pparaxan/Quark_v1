@@ -9,9 +9,10 @@ use crate::webview as bindings;
 pub enum Window {}
 
 #[repr(i32)]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Default)]
 pub enum SizeHint {
     /// Width and height are default size
+    #[default]
     NONE = 0,
     /// Width and height are minimum bounds
     MIN = 1,
@@ -19,12 +20,6 @@ pub enum SizeHint {
     MAX = 2,
     /// Window size may not be changed by the user
     FIXED = 3,
-}
-
-impl Default for SizeHint {
-    fn default() -> Self {
-        SizeHint::NONE
-    }
 }
 
 #[derive(Clone)]
