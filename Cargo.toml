@@ -7,7 +7,7 @@
 # examples
 
 [package]
-name = "quark"
+name = "libquark"
 version = "3.0.0"
 description = "A lightweight alternative to Electron."
 authors = ["Jaydon Nelson <xxdr@duck.com>"]
