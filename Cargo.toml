@@ -8,7 +8,7 @@
 
 [package]
 name = "libquark"
-version = "4.0.0"
+version = "4.0.1"
 description = "A lightweight alternative to Electron."
 authors = ["Jaydon Nelson <xxdr@duck.com>"]
 license = "MIT"
