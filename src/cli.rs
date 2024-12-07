@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Args {
     pub live: bool,
     pub bundle: bool,
@@ -8,10 +8,7 @@ pub fn parse_args() -> Args {
     // https://github.com/WilliamAnimate/catgirls_anytime/blob/849c973e8e355cb6ae0695e287764299c6c2543d/src/lib.rs#L18-L76
     let args: Vec<String> = std::env::args().collect();
 
-    let mut parsed_args = Args {
-        live: false,
-        bundle: false,
-    };
+    let mut parsed_args = Args::default();
 
     for args in &args[1..] {
         match args.as_str() {
