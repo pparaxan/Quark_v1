@@ -10,3 +10,8 @@
 
 ## What is Quark?
 Quark is a "do-it-yourself" framework designed to create lightweight applications by using the power of your system's webview with Hyaline, a library that's built-in Quark used to rendering the actual web page.
+
+Getting started building a Quark application has never been easier. Just `git clone` this repository and start coding!
+```sh
+git clone https://codeberg.org/pparaxan/QuarkApp
+```
