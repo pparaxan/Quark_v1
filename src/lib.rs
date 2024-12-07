@@ -9,9 +9,6 @@ use config::QuarkConfig;
 use error::QuarkError;
 use webview::{Webview, WebviewBuilder};
 
-#[cfg_attr(debug_assertions, allow(dead_code))]
-const BUILDTYPE: bool = cfg!(debug_assertions);
-
 #[allow(dead_code)]
 pub struct Quark {
     webview: Webview,
@@ -27,7 +24,7 @@ impl Quark {
             .width(config.width)
             .height(config.height)
             .resize(config.resizable)
-            .debug(BUILDTYPE)
+            .debug(cfg!(debug_assertions))
             .build();
 
         let mut quark = Quark { webview, config };
