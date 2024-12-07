@@ -1,4 +1,4 @@
-use quark::prelude::*;
+use libquark::prelude::*;
 
 fn main() -> Result<(), QuarkError> {
     let config = QuarkConfig::new()
