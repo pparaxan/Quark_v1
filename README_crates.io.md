@@ -1,6 +1,4 @@
-<img width="128" height="128" align="left" src="https://codeberg.org/pparaxan/Quark/raw/commit/1d47a6d46c7095c213b1ecf899b0eae2e9b86685/assets/Logo/Quark.svg" style="margin-right: 20px;">
-
-# Quark
+<img width="128" height="128" align="right" src="https://codeberg.org/pparaxan/Quark/raw/commit/1d47a6d46c7095c213b1ecf899b0eae2e9b86685/assets/Logo/Quark.svg">
 
 <p>
     <i>"Quarks are very small particles..."</i>
