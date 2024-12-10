@@ -60,8 +60,6 @@ impl Webview {
     }
 
     pub fn run(&mut self) {
-        let c_url = CString::new(self.url.as_bytes()).expect("No null bytes in parameter url");
-        unsafe { bindings::webview_navigate(*self.inner, c_url.as_ptr()) }
         unsafe { bindings::webview_run(*self.inner) }
     }
 
@@ -84,14 +82,8 @@ impl Webview {
     }
 
     pub fn set_html(&mut self, html: &str) {
-        let html = html.to_string();
-
-        self.dispatch(move |wv| {
-            let c_html = CString::new(html).expect("Failed to convert HTML");
-            unsafe {
-                bindings::webview_set_html(*wv.inner, c_html.as_ptr());
-            }
-        });
+        let c_html = CString::new(html).expect("Failed to save HTML in the binary.");
+        unsafe { bindings::webview_set_html(*self.inner, c_html.as_ptr()) }
     }
 
     pub fn navigate(&mut self, url: &str) {
