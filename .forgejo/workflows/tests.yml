@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: |
           curl -sL https://deb.nodesource.com/setup_23.x | bash -
-          apt install nodejs libwebkit2gtk-4.1-dev xvfb -y
+          apt install nodejs libwebkit2gtk-4.1-dev weston -y
       - name: Checkout
         uses: https://code.forgejo.org/actions/checkout@v4
       - name: Report versions
@@ -24,10 +24,10 @@ jobs:
           cargo pkgid
           echo "node $(node -v)"
           echo "npm $(npm -v)"
-      - name: Start virtual X server
+      - name: Start headless interface
         run: |
-          export DISPLAY=:99
-          Xvfb :99 -screen 0 1280x1024x24 &
-          sleep 2 && echo "xvfb should now be working, continuing..."
+          echo $XDG_RUNTIME_DIR
+          weston --no-config --socket=wl-test-env --backend=headless
+          echo "weston should be all set, continuing..."
       - name: Run tests on Quark
-        run: cargo test --test main -v
+        run: env WAYLAND_DISPLAY=wl-test-env cargo test --test main -v
