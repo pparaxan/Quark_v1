@@ -1,20 +1,8 @@
-use quark::prelude::*;
+use libquark::prelude::*;
 
 #[cfg(test)]
 mod quark_lib {
     use super::*;
-    use std::{path::Path, thread::sleep};
-
-    const BASIC_EXAMPLE: &str = "examples/frontend/basic";
-
-    fn assert_html_exists() {
-        let html_path = Path::new(BASIC_EXAMPLE).join("index.html");
-        assert!(
-            html_path.exists(),
-            "index.html should exist in {}",
-            BASIC_EXAMPLE
-        );
-    }
 
     // #[test]
     // fn test_valid_initialization() {
@@ -56,10 +44,7 @@ mod quark_lib {
 
     #[test]
     fn custom_config() {
-        assert_html_exists();
-
         let config = QuarkConfig::new()
-            .frontend(BASIC_EXAMPLE)
             .title("QuarkTestWindowConfig")
             .width(1024)
             .height(768)
