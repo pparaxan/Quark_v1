@@ -1,4 +1,4 @@
-use crate::webview::SizeHint;
+use hyaline::SizeHint;
 
 /// Defines the primary configuration for a Quark application.
 ///

@@ -3,11 +3,10 @@ pub mod config;
 pub mod error;
 pub mod prelude;
 pub mod setup;
-pub mod webview;
 
 use config::QuarkConfig;
 use error::QuarkError;
-use webview::{Webview, WebviewBuilder};
+use hyaline::{Webview, WebviewBuilder};
 
 #[allow(dead_code)]
 pub struct Quark {

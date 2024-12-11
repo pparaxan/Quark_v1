@@ -10,9 +10,9 @@ checksum = "d92bec98840b8f03a5ff5413de5293bfcd8bf96467cf5452609f939ec6f5de16"
 
 [[package]]
 name = "cc"
-version = "1.2.1"
+version = "1.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd9de9f2205d5ef3fd67e685b0df337994ddd4495e2a28d185500d0e1edfea47"
+checksum = "27f657647bcff5394bf56c7317665bbf790a137a50eaaa5c6bfbb9e27a518f2d"
 dependencies = [
  "shlex",
 ]
@@ -28,6 +28,15 @@ name = "httpdate"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
+
+[[package]]
+name = "hyaline"
+version = "0.0.1"
+source = "git+https://codeberg.org/pparaxan/Hyaline.git?rev=a335ba6899#a335ba6899e709ad309c42c9b7f15ae6754d3771"
+dependencies = [
+ "cc",
+ "pkg-config",
+]
 
 [[package]]
 name = "include_dir"
@@ -52,9 +61,8 @@ dependencies = [
 name = "libquark"
 version = "4.0.1"
 dependencies = [
- "cc",
+ "hyaline",
  "include_dir",
- "pkg-config",
  "tiny_http",
 ]
 

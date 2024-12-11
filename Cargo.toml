@@ -19,12 +19,9 @@ keywords = [ "web", "gui", "desktop" ]
 categories = [ "gui", "web-programming" ]
 
 [dependencies]
+hyaline = { git = "https://codeberg.org/pparaxan/Hyaline.git", rev = "a335ba6899" }
 include_dir = "0.7.4"
 tiny_http = "0.12.0"
-
-[build-dependencies]
-cc = "1.2.1"
-pkg-config = "0.3.31"
 
 [profile.release]
 panic = "abort"
