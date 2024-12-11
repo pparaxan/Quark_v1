@@ -28,7 +28,7 @@ jobs:
         run: | # `/tmp/weston` is needed because by default, there's no value set for XDG_RUNTIME_DIR.
           mkdir -p /tmp/weston
           chmod 700 /tmp/weston
-          export XDG_RUNTIME_DIR=/tmp/weston_runtime
+          export XDG_RUNTIME_DIR=/tmp/weston
           echo $XDG_RUNTIME_DIR
           weston --no-config --socket=wl-test-env --backend=headless
           echo "weston should be all set, continuing..."
