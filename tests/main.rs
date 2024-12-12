@@ -66,9 +66,10 @@ mod quark_lib {
     #[test]
     fn errors() {
         let errors = [
-            QuarkError::InitializationFailed,
-            QuarkError::PathError,
-            QuarkError::WebviewError,
+            QuarkError::FrontendPathMissing,
+            QuarkError::IncludeDirCouldntConvertToUTF8,
+            QuarkError::ServerPortIsntAvailable,
+            QuarkError::ServerError,
         ];
 
         for error in &errors {

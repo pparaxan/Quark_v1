@@ -1,9 +1,7 @@
 #[derive(Debug)]
 pub enum QuarkError {
-    InitializationFailed,
-    PathError,
-    WebviewError,
-    RustEmbedAssetError,
-    RustEmbedAssetNotFoundError,
+    FrontendPathMissing,
+    IncludeDirCouldntConvertToUTF8,
+    ServerPortIsntAvailable,
     ServerError,
 }
