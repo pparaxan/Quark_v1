@@ -1,3 +1,10 @@
+pub mod build_http;
+pub mod build_static;
+
+use include_dir::{Dir, include_dir};
+
+static QUARKFOLDER: Dir = include_dir!("$CARGO_MANIFEST_DIR/src_quark");
+
 #[derive(Debug, Default)]
 pub struct Args {
     pub live: bool,

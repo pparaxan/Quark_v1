@@ -2,8 +2,9 @@ pub mod cli;
 pub mod config;
 pub mod error;
 pub mod prelude;
-pub mod setup;
 
+use crate::cli::build_http::*;
+use crate::cli::build_static::*;
 use config::QuarkConfig;
 use error::QuarkError;
 use hyaline::{Webview, WebviewBuilder};
@@ -29,19 +30,13 @@ impl Quark {
         let mut quark = Quark { webview, config };
 
         if args.live {
-            quark.setup_http()?;
+            // quark.build_http()?;
+            build_http(&mut quark)?;
         } else {
-            quark.setup_static()?;
+            // quark.build_static()?;
+            build_static(&mut quark)?;
         }
         Ok(quark)
-    }
-
-    fn setup_static(&mut self) -> Result<(), QuarkError> {
-        crate::setup::setup_static(self)
-    }
-
-    fn setup_http(&mut self) -> Result<(), QuarkError> {
-        crate::setup::setup_http(self)
     }
 
     pub fn bind<F>(&mut self, name: &str, handler: F)
