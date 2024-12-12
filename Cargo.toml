@@ -19,7 +19,7 @@ keywords = [ "web", "gui", "desktop" ]
 categories = [ "gui", "web-programming" ]
 
 [dependencies]
-hyaline = { git = "https://codeberg.org/pparaxan/Hyaline.git", rev = "a335ba6899" }
+hyaline = { git = "https://codeberg.org/pparaxan/Hyaline.git", rev = "46d4bdd8f4" }
 include_dir = "0.7.4"
 tiny_http = "0.12.0"
 
