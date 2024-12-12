@@ -4,7 +4,7 @@ use crate::cli::QUARKFOLDER;
 use std::sync::Arc;
 use tiny_http::{Response, Server};
 
-pub fn build_http(quark: &mut Quark) -> Result<(), QuarkError> { // Rewrite this
+pub fn build_http(quark: &mut Quark) -> Result<(), QuarkError> {
     let server = Server::http("127.0.0.1:24114").map_err(|_| QuarkError::ServerPortIsntAvailable)?;
     let addr = server.server_addr();
 
