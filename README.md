@@ -11,7 +11,7 @@
 
 So, what exactly *is* Quark?
 
-Quark is a "do-it-yourself" framework designed to create lightweight applications by using the power of your system's webview with [Hyaline](https://codeberg.org/pparaxan/Quark/src/branch/master/src/webview).
+Quark is a "do-it-yourself" framework designed to create lightweight applications by using the power of your system's webview with [Hyaline](https://codeberg.org/pparaxan/Hyaline).
 
 Developers can build their user interface using HTML, CSS, and JavaScript, paired with a high-performance Rust backend for speed and reliability.
 
