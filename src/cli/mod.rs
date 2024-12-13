@@ -1,5 +1,6 @@
 pub mod build_http;
 pub mod build_static;
+pub mod package;
 
 use include_dir::{Dir, include_dir};
 
@@ -30,8 +31,7 @@ pub fn parse_args() -> Args {
                 parsed_args.live = true;
             }
             "--bundle" => {
-                println!("Error: This argument isn't complete!");
-                std::process::exit(1);
+                bundle_project();
             }
             other => {
                 eprintln!("'{other}' is an unknown argument silly. Use '--help' to list the commands.");
