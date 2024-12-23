@@ -27,7 +27,7 @@ short_description = "An example of a bundled application"
 long_description = "A trivial application that just displays a blank window with a title bar. It serves as an example of an application that can be bundled with cargo-bundle, as well as a test-case for cargo-bundle's support for bundling crate examples."
 
 [dependencies]
-hyaline = { git = "https://codeberg.org/pparaxan/Hyaline.git", rev = "46d4bdd8f4" }
+libquark-hyaline = "1.0.0"
 include_dir = "0.7.4"
 tiny_http = "0.12.0"
 ar = "0.9.0"
