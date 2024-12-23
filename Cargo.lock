@@ -30,15 +30,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
 
 [[package]]
-name = "hyaline"
-version = "0.0.1"
-source = "git+https://codeberg.org/pparaxan/Hyaline.git?rev=46d4bdd8f4#46d4bdd8f4b98d8ea964fb2e1e3945bf412b59cf"
-dependencies = [
- "cc",
- "pkg-config",
-]
-
-[[package]]
 name = "include_dir"
 version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -59,11 +50,21 @@ dependencies = [
 
 [[package]]
 name = "libquark"
-version = "4.0.1"
+version = "4.1.0"
 dependencies = [
- "hyaline",
  "include_dir",
+ "libquark-hyaline",
  "tiny_http",
+]
+
+[[package]]
+name = "libquark-hyaline"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eb9e682bdccd4c5bf8098e9352cc1a908b4ae86940994d8ab46bfa503cd7e178"
+dependencies = [
+ "cc",
+ "pkg-config",
 ]
 
 [[package]]
