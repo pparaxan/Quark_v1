@@ -15,7 +15,7 @@ jobs:
           curl -sL https://deb.nodesource.com/setup_23.x | bash -
           apt install nodejs libwebkit2gtk-4.1-dev -y
       - name: Checkout
-        uses: https://code.forgejo.org/actions/checkout@v4
+        uses: actions/checkout@v4
       - name: Release new version on crates.io
         env:
           CARGO_REGISTRY_TOKEN: '${{ secrets.CARGO_REGISTRY_TOKEN }}'
