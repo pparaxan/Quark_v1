@@ -1,0 +1,26 @@
+---
+on:
+  push:
+    branches:
+      - "deepsource"
+
+jobs:
+  tests:
+    runs-on: codeberg-small
+    container:
+      image: "rustlang/rust:nightly"
+    steps:
+      - name: Install dependencies
+        run: |
+          curl -sL https://deb.nodesource.com/setup_23.x | bash -
+          curl https://deepsource.com/cli | sh
+          apt install nodejs libwebkit2gtk-4.1-dev -y
+          cargo +nightly install cargo-llvm-cov
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run coverage against "cargo test"
+        run: cargo llvm-cov --lcov --output-path coverage.info
+      - name: Report coverage artifact
+        env:
+          DEEPSOURCE_DSN: '${{ secrets.DEEPSOURCE_DSN }}'
+        run: ./bin/deepsource report --analyzer test-coverage --key rust --value-file ./coverage.info
