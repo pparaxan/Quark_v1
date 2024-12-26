@@ -1,0 +1,25 @@
+---
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  tests:
+    runs-on: codeberg-tiny
+    container:
+      image: "rustlang/rust:nightly"
+    steps:
+      - name: Install dependencies
+        run: |
+          curl -sL https://deb.nodesource.com/setup_23.x | bash -
+          apt install nodejs libwebkit2gtk-4.1-dev xvfb -y
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run tests on Quark
+        run: |
+          export DISPLAY=:99
+          Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+          sleep 2
+          cargo test --test main -v
