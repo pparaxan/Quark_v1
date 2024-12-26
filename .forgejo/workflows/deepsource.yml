@@ -13,7 +13,6 @@ jobs:
       - name: Install dependencies
         run: |
           curl -sL https://deb.nodesource.com/setup_23.x | bash -
-          curl https://deepsource.com/cli | sh
           apt install nodejs libwebkit2gtk-4.1-dev xvfb -y
           cargo +nightly install cargo-llvm-cov
       - name: Checkout
@@ -28,5 +27,5 @@ jobs:
         env:
           DEEPSOURCE_DSN: '${{ secrets.DEEPSOURCE_DSN }}'
         run: |
-          chmod +x ./bin/deepsource
+          curl https://deepsource.com/cli | sh
           ./bin/deepsource report --analyzer test-coverage --key rust --value-file ./coverage.info
