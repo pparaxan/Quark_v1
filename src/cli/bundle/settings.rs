@@ -1,9 +1,10 @@
 use super::category::AppCategory;
 use super::common::print_warning;
-use std::fmt::Result; // Move to result::Result?
-use std::error::Error;
+use clap::ArgMatches;
 
 use cargo_metadata::{Metadata, MetadataCommand};
+use error_chain::bail;
+use serde::Deserialize;
 use serde_json::Value;
 use std::borrow::Cow;
 use std::collections::HashMap;
@@ -15,10 +16,8 @@ use target_build_utils::TargetInfo;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PackageType {
     OsxBundle,
-    IosBundle,
     WindowsMsi,
     Deb,
-    Rpm,
 }
 
 impl PackageType {
@@ -26,10 +25,8 @@ impl PackageType {
         // Other types we may eventually want to support: apk
         match name {
             "deb" => Some(PackageType::Deb),
-            "ios" => Some(PackageType::IosBundle),
             "msi" => Some(PackageType::WindowsMsi),
             "osx" => Some(PackageType::OsxBundle),
-            "rpm" => Some(PackageType::Rpm),
             _ => None,
         }
     }
@@ -37,10 +34,8 @@ impl PackageType {
     pub fn short_name(&self) -> &'static str {
         match *self {
             PackageType::Deb => "deb",
-            PackageType::IosBundle => "ios",
             PackageType::WindowsMsi => "msi",
             PackageType::OsxBundle => "osx",
-            PackageType::Rpm => "rpm",
         }
     }
 
@@ -51,10 +46,8 @@ impl PackageType {
 
 const ALL_PACKAGE_TYPES: &[PackageType] = &[
     PackageType::Deb,
-    PackageType::IosBundle,
     PackageType::WindowsMsi,
     PackageType::OsxBundle,
-    PackageType::Rpm,
 ];
 
 #[derive(Clone, Debug)]
@@ -106,7 +99,7 @@ pub struct Settings {
 }
 
 /// Try to load `Cargo.toml` file in the specified directory
-fn load_metadata(dir: &Path) -> crate::Result<Metadata> {
+fn load_metadata(dir: &Path) -> crate::cli::bundle::Result<Metadata> {
     let cargo_file_path = dir.join("Cargo.toml");
     Ok(MetadataCommand::new()
         .manifest_path(cargo_file_path)
@@ -114,7 +107,7 @@ fn load_metadata(dir: &Path) -> crate::Result<Metadata> {
 }
 
 impl Settings {
-    pub fn new(current_dir: PathBuf, matches: &ArgMatches) -> crate::Result<Self> {
+    pub fn new(current_dir: PathBuf, matches: &ArgMatches) -> crate::cli::bundle::Result<Self> {
         let package_type = match matches.value_of("format") {
             Some(name) => match PackageType::from_short_name(name) {
                 Some(package_type) => Some(package_type),
@@ -133,7 +126,7 @@ impl Settings {
             "release".to_string()
         } else if let Some(profile) = matches.value_of("profile") {
             if profile == "debug" {
-                bail!("Profile name `debug` is reserved")
+                eprintln!("Profile name `debug` is reserved")
             }
             profile.to_string()
         } else {
@@ -176,9 +169,7 @@ impl Settings {
         let binary_extension = match package_type {
             Some(x) => match x {
                 PackageType::OsxBundle
-                | PackageType::IosBundle
-                | PackageType::Deb
-                | PackageType::Rpm => "",
+                | PackageType::Deb => "",
                 PackageType::WindowsMsi => ".exe",
             },
             None => "",
@@ -268,7 +259,7 @@ impl Settings {
 
     fn find_bundle_package(
         metadata: Metadata,
-    ) -> crate::Result<(BundleSettings, cargo_metadata::Package)> {
+    ) -> crate::cli::bundle::Result<(BundleSettings, cargo_metadata::Package)> {
         for package_id in metadata.workspace_members.iter() {
             let package = &metadata[package_id];
             if let Some(bundle) = package.metadata.get("bundle") {
@@ -314,7 +305,7 @@ impl Settings {
     /// command-line, returns the native package type(s) for that target;
     /// otherwise, returns the native package type(s) for the host platform.
     /// Fails if the host/target's native package type is not supported.
-    pub fn package_types(&self) -> Result<Vec<PackageType>> {
+    pub fn package_types(&self) -> crate::cli::bundle::Result<Vec<PackageType>> {
         if let Some(package_type) = self.package_type {
             Ok(vec![package_type])
         } else {
@@ -325,8 +316,7 @@ impl Settings {
             };
             match target_os {
                 "macos" => Ok(vec![PackageType::OsxBundle]),
-                "ios" => Ok(vec![PackageType::IosBundle]),
-                "linux" => Ok(vec![PackageType::Deb]), // TODO: Do Rpm too, once it's implemented.
+                "linux" => Ok(vec![PackageType::Deb]),
                 "windows" => Ok(vec![PackageType::WindowsMsi]),
                 os => bail!("Native {} bundles not yet supported.", os),
             }
@@ -495,7 +485,7 @@ fn bundle_settings_from_table(
     opt_map: &Option<HashMap<String, BundleSettings>>,
     map_name: &str,
     bundle_name: &str,
-) -> crate::Result<BundleSettings> {
+) -> crate::cli::bundle::Result<BundleSettings> {
     if let Some(bundle_settings) = opt_map.as_ref().and_then(|map| map.get(bundle_name)) {
         Ok(bundle_settings.clone())
     } else {
@@ -526,15 +516,15 @@ impl<'a> ResourcePaths<'a> {
 }
 
 impl<'a> Iterator for ResourcePaths<'a> {
-    type Item = Result<PathBuf>;
+    type Item = crate::cli::bundle::Result<PathBuf>;
 
-    fn next(&mut self) -> Option<Result<PathBuf>> {
+    fn next(&mut self) -> Option<crate::cli::bundle::Result<PathBuf>> {
         loop {
             if let Some(ref mut walk_entries) = self.walk_iter {
                 if let Some(entry) = walk_entries.next() {
                     let entry = match entry {
                         Ok(entry) => entry,
-                        Err(error) => return Some(Err(Error::from(error))),
+                        Err(error) => return Some(Err(crate::cli::bundle::Error::from(error))),
                     };
                     let path = entry.path();
                     if path.is_dir() {
@@ -548,7 +538,7 @@ impl<'a> Iterator for ResourcePaths<'a> {
                 if let Some(glob_result) = glob_paths.next() {
                     let path = match glob_result {
                         Ok(path) => path,
-                        Err(error) => return Some(Err(crate::Error::from(error))),
+                        Err(error) => return Some(Err(crate::cli::bundle::Error::from(error))),
                     };
                     if path.is_dir() {
                         if self.allow_walk {
@@ -557,7 +547,7 @@ impl<'a> Iterator for ResourcePaths<'a> {
                             continue;
                         } else {
                             let msg = format!("{path:?} is a directory");
-                            return Some(Err(Error::from(msg)));
+                            return Some(Err(crate::cli::bundle::Error::from(msg)));
                         }
                     }
                     return Some(Ok(path));
@@ -567,7 +557,7 @@ impl<'a> Iterator for ResourcePaths<'a> {
             if let Some(pattern) = self.pattern_iter.next() {
                 let glob = match glob::glob(pattern) {
                     Ok(glob) => glob,
-                    Err(error) => return Some(Err(Error::from(error))),
+                    Err(error) => return Some(Err(crate::cli::bundle::Error::from(error))),
                 };
                 self.glob_iter = Some(glob);
                 continue;

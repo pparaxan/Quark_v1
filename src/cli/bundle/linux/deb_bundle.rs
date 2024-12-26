@@ -19,7 +19,7 @@
 // generate postinst or prerm files.
 
 use crate::{
-    bundle::{
+    cli::bundle::{
         common,
         linux::common::{
             create_file_with_data, generate_desktop_file, generate_icon_files, generate_md5sum,
@@ -27,14 +27,14 @@ use crate::{
         },
         Settings,
     },
-    ResultExt,
+    cli::bundle::ResultExt,
 };
 
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
-pub fn bundle_project(settings: &Settings) -> crate::Result<Vec<PathBuf>> {
+pub fn bundle_project(settings: &Settings) -> crate::cli::bundle::Result<Vec<PathBuf>> {
     let arch = match settings.binary_arch() {
         "x86" => "i386",
         "x86_64" => "amd64",
@@ -97,7 +97,7 @@ fn generate_control_file(
     arch: &str,
     control_dir: &Path,
     data_dir: &Path,
-) -> crate::Result<()> {
+) -> crate::cli::bundle::Result<()> {
     // For more information about the format of this file, see
     // https://www.debian.org/doc/debian-policy/ch-controlfields.html
     let dest_path = control_dir.join("control");
@@ -148,7 +148,7 @@ fn generate_control_file(
 
 /// Create an `md5sums` file in the `control_dir` containing the MD5 checksums
 /// for each file within the `data_dir`.
-fn generate_md5sums(control_dir: &Path, data_dir: &Path) -> crate::Result<()> {
+fn generate_md5sums(control_dir: &Path, data_dir: &Path) -> crate::cli::bundle::Result<()> {
     let md5sums_path = control_dir.join("md5sums");
     let mut md5sums_file = common::create_file(&md5sums_path)?;
     for entry in WalkDir::new(data_dir) {
@@ -172,7 +172,7 @@ fn generate_md5sums(control_dir: &Path, data_dir: &Path) -> crate::Result<()> {
 
 /// Copy the bundle's resource files into an appropriate directory under the
 /// `data_dir`.
-fn transfer_resource_files(settings: &Settings, data_dir: &Path) -> crate::Result<()> {
+fn transfer_resource_files(settings: &Settings, data_dir: &Path) -> crate::cli::bundle::Result<()> {
     let resource_dir = data_dir.join("usr/lib").join(settings.binary_name());
     for src in settings.resource_files() {
         let src = src?;
@@ -185,7 +185,7 @@ fn transfer_resource_files(settings: &Settings, data_dir: &Path) -> crate::Resul
 
 /// Creates an `ar` archive from the given source files and writes it to the
 /// given destination path.
-fn create_archive(srcs: Vec<PathBuf>, dest: &Path) -> crate::Result<()> {
+fn create_archive(srcs: Vec<PathBuf>, dest: &Path) -> crate::cli::bundle::Result<()> {
     let mut builder = ar::Builder::new(common::create_file(dest)?);
     for path in &srcs {
         builder.append_path(path)?;

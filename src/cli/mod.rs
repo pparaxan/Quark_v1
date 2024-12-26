@@ -1,6 +1,6 @@
 pub mod build_http;
 pub mod build_static;
-pub mod package;
+pub mod bundle;
 
 use include_dir::{Dir, include_dir};
 
@@ -23,7 +23,7 @@ pub fn parse_args() -> Args {
             "--help" => {
                 println!("Usage: cargo run -- [OPTION]");
                 println!("--live          Start a live server with hot reload support");
-                println!("--package       Package your Quark application for your target [WIP]");
+                println!("--package       Package your Quark application for your target");
                 println!("--help          Display this help message and exit");
                 std::process::exit(0);
             }
@@ -31,7 +31,7 @@ pub fn parse_args() -> Args {
                 parsed_args.live = true;
             }
             "--bundle" => {
-                bundle_project();
+                parsed_args.bundle = true;
             }
             other => {
                 eprintln!("'{other}' is an unknown argument silly. Use '--help' to list the commands.");

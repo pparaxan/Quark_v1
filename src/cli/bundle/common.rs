@@ -1,4 +1,4 @@
-use crate::ResultExt;
+use crate::cli::bundle::ResultExt;
 
 use std::ffi::OsStr;
 use std::fs::{self, File};
@@ -19,7 +19,7 @@ pub fn is_retina<P: AsRef<Path>>(path: P) -> bool {
 
 /// Creates a new file at the given path, creating any parent directories as
 /// needed.
-pub fn create_file(path: &Path) -> crate::Result<BufWriter<File>> {
+pub fn create_file(path: &Path) -> crate::cli::bundle::Result<BufWriter<File>> {
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent)
             .chain_err(|| format!("Failed to create directory {parent:?}"))?;
@@ -29,31 +29,34 @@ pub fn create_file(path: &Path) -> crate::Result<BufWriter<File>> {
 }
 
 fn symlink_dir(src: &Path, dst: &Path) -> io::Result<()> {
-    if cfg!(unix) {
+    #[cfg(unix)] {
         std::os::unix::fs::symlink(src, dst)
-    } else {
+    }
+
+    #[cfg(windows)] {
         std::os::windows::fs::symlink_dir(src, dst)
     }
 }
 
 fn symlink_file(src: &Path, dst: &Path) -> io::Result<()> {
-    if cfg!(unix) {
+    #[cfg(unix)] {
         std::os::unix::fs::symlink(src, dst)
-    } else {
+    }
+
+    #[cfg(windows)] {
         std::os::windows::fs::symlink_file(src, dst)
     }
 }
 
-
 /// Copies a regular file from one path to another, creating any parent
 /// directories of the destination path as necessary.  Fails if the source path
 /// is a directory or doesn't exist.
-pub fn copy_file(from: &Path, to: &Path) -> crate::Result<()> {
+pub fn copy_file(from: &Path, to: &Path) -> crate::cli::bundle::Result<()> {
     if !from.exists() {
-        bail!("{:?} does not exist", from);
+        eprintln!("{:?} does not exist", from);
     }
     if !from.is_file() {
-        bail!("{:?} is not a file", from);
+        eprintln!("{:?} is not a file", from);
     }
     let dest_dir = to.parent().unwrap();
     fs::create_dir_all(dest_dir).chain_err(|| format!("Failed to create {dest_dir:?}"))?;
@@ -65,15 +68,15 @@ pub fn copy_file(from: &Path, to: &Path) -> crate::Result<()> {
 /// parent directories of the destination path as necessary.  Fails if the
 /// source path is not a directory or doesn't exist, or if the destination path
 /// already exists.
-pub fn copy_dir(from: &Path, to: &Path) -> crate::Result<()> {
+pub fn copy_dir(from: &Path, to: &Path) -> crate::cli::bundle::Result<()> {
     if !from.exists() {
-        bail!("{:?} does not exist", from);
+        eprintln!("{:?} does not exist", from);
     }
     if !from.is_dir() {
-        bail!("{:?} is not a directory", from);
+        eprintln!("{:?} is not a directory", from);
     }
     if to.exists() {
-        bail!("{:?} already exists", to);
+        eprintln!("{:?} already exists", to);
     }
     let parent = to.parent().unwrap();
     fs::create_dir_all(parent).chain_err(|| format!("Failed to create {parent:?}"))?;
@@ -117,13 +120,13 @@ pub fn resource_relpath(path: &Path) -> PathBuf {
 
 /// Prints a message to stderr, in the same format that `cargo` uses,
 /// indicating that we are creating a bundle with the given filename.
-pub fn print_bundling(filename: &str) -> crate::Result<()> {
+pub fn print_bundling(filename: &str) -> crate::cli::bundle::Result<()> {
     print_progress("Bundling", filename)
 }
 
 /// Prints a message to stderr, in the same format that `cargo` uses,
 /// indicating that we have finished the the given bundles.
-pub fn print_finished(output_paths: &Vec<PathBuf>) -> crate::Result<()> {
+pub fn print_finished(output_paths: &Vec<PathBuf>) -> crate::cli::bundle::Result<()> {
     let pluralised = if output_paths.len() == 1 {
         "bundle"
     } else {
@@ -147,7 +150,7 @@ fn safe_term_attr<T: term::Terminal + ?Sized>(
     }
 }
 
-fn print_progress(step: &str, msg: &str) -> crate::Result<()> {
+fn print_progress(step: &str, msg: &str) -> crate::cli::bundle::Result<()> {
     if let Some(mut output) = term::stderr() {
         safe_term_attr(&mut output, term::Attr::Bold)?;
         output.fg(term::color::GREEN)?;
@@ -166,7 +169,7 @@ fn print_progress(step: &str, msg: &str) -> crate::Result<()> {
 }
 
 /// Prints a warning message to stderr, in the same format that `cargo` uses.
-pub fn print_warning(message: &str) -> crate::Result<()> {
+pub fn print_warning(message: &str) -> crate::cli::bundle::Result<()> {
     if let Some(mut output) = term::stderr() {
         safe_term_attr(&mut output, term::Attr::Bold)?;
         output.fg(term::color::YELLOW)?;
@@ -185,7 +188,7 @@ pub fn print_warning(message: &str) -> crate::Result<()> {
 }
 
 /// Prints an error to stderr, in the same format that `cargo` uses.
-pub fn print_error(error: &crate::Error) -> crate::Result<()> {
+pub fn print_error(error: &crate::cli::bundle::Error) -> crate::cli::bundle::Result<()> {
     if let Some(mut output) = term::stderr() {
         safe_term_attr(&mut output, term::Attr::Bold)?;
         output.fg(term::color::RED)?;
