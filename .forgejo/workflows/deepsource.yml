@@ -27,4 +27,6 @@ jobs:
       - name: Report coverage artifact
         env:
           DEEPSOURCE_DSN: '${{ secrets.DEEPSOURCE_DSN }}'
-        run: ./bin/deepsource report --analyzer test-coverage --key rust --value-file ./coverage.info
+        run: |
+          chmod +x ./bin/deepsource
+          ./bin/deepsource report --analyzer test-coverage --key rust --value-file ./coverage.info
