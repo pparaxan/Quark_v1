@@ -32,6 +32,7 @@ pub fn parse_args() -> Args {
             }
             "--bundle" => {
                 parsed_args.bundle = true;
+                std::process::exit(0);
             }
             other => {
                 eprintln!("'{other}' is an unknown argument silly. Use '--help' to list the commands.");
