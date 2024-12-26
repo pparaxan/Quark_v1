@@ -2,7 +2,7 @@
 on:
   push:
     branches:
-      - "deepsource"
+      - "master"
 
 jobs:
   tests:
