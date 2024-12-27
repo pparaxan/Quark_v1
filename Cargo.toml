@@ -18,6 +18,14 @@ edition = "2021"
 keywords = [ "web", "gui", "desktop" ]
 categories = [ "gui", "web-programming" ]
 
+[package.metadata.bundle]
+name = "quark"
+identifier = "com.xan.quark"
+icon = ["assets/Logo/png/icon*.png"]
+category = "DeveloperTool"
+short_description = "An example of a bundled application"
+long_description = "A trivial application that just displays a blank window with a title bar. It serves as an example of an application that can be bundled with cargo-bundle, as well as a test-case for cargo-bundle's support for bundling crate examples."
+
 [dependencies]
 hyaline = { git = "https://codeberg.org/pparaxan/Hyaline.git", rev = "46d4bdd8f4" }
 include_dir = "0.7.4"
@@ -26,7 +34,6 @@ ar = "0.9"
 cab = "0.4"
 cargo_metadata = "0.15"
 chrono = "0.4"
-clap = "^2"
 dirs = "1.0"
 error-chain = "0.12"
 glob = "0.3"

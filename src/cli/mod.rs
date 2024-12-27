@@ -32,6 +32,18 @@ pub fn parse_args() -> Args {
             }
             "--bundle" => {
                 parsed_args.bundle = true;
+                match bundle::bundle_executable() {
+                    Ok(paths) => {
+                        println!("Successfully bundled application to:");
+                        for path in paths {
+                            println!("  {}", path.display());
+                        }
+                    }
+                    Err(e) => {
+                        let _ = bundle::print_error(&e);
+                        std::process::exit(1);
+                    }
+                }
                 std::process::exit(0);
             }
             other => {

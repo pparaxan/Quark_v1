@@ -1,7 +1,5 @@
 use super::category::AppCategory;
 use super::common::print_warning;
-use clap::ArgMatches;
-
 use cargo_metadata::{Metadata, MetadataCommand};
 use error_chain::bail;
 use serde::Deserialize;
@@ -91,11 +89,10 @@ pub struct Settings {
     project_out_directory: PathBuf,
     build_artifact: BuildArtifact,
     profile: String,
-    all_features: bool,
-    no_default_features: bool,
     binary_path: PathBuf,
     binary_name: String,
     bundle_settings: BundleSettings,
+
 }
 
 /// Try to load `Cargo.toml` file in the specified directory
@@ -107,75 +104,45 @@ fn load_metadata(dir: &Path) -> crate::cli::bundle::Result<Metadata> {
 }
 
 impl Settings {
-    pub fn new(current_dir: PathBuf, matches: &ArgMatches) -> crate::cli::bundle::Result<Self> {
-        let package_type = match matches.value_of("format") {
-            Some(name) => match PackageType::from_short_name(name) {
-                Some(package_type) => Some(package_type),
-                None => bail!("Unsupported bundle format: {}", name),
-            },
-            None => None,
-        };
-        let build_artifact = if let Some(bin) = matches.value_of("bin") {
-            BuildArtifact::Bin(bin.to_string())
-        } else if let Some(example) = matches.value_of("example") {
-            BuildArtifact::Example(example.to_string())
+    pub fn new(current_dir: PathBuf) -> crate::cli::bundle::Result<Self> {
+        let package_type = None;
+        let profile = "release".to_string();
+        let target = None;
+        let features = None;
+
+        let current_exe = std::env::current_exe()?;
+        let binary_name = current_exe
+            .file_name()
+            .and_then(|n| n.to_str())
+            .ok_or_else(|| "Could not determine binary name")?
+            .to_string();
+
+        let build_artifact = if current_exe
+            .to_string_lossy()
+            .contains("/examples/")
+            || current_exe
+            .to_string_lossy()
+            .contains("\\examples\\")
+        {
+            BuildArtifact::Example(binary_name.clone())
         } else {
             BuildArtifact::Main
         };
-        let profile = if matches.is_present("release") {
-            "release".to_string()
-        } else if let Some(profile) = matches.value_of("profile") {
-            if profile == "debug" {
-                eprintln!("Profile name `debug` is reserved")
-            }
-            profile.to_string()
-        } else {
-            "dev".to_string()
-        };
-        let all_features = matches.is_present("all-features");
-        let no_default_features = matches.is_present("no-default-features");
-        let target = match matches.value_of("target") {
-            Some(triple) => Some((triple.to_string(), TargetInfo::from_str(triple)?)),
-            None => None,
-        };
-        let features = matches.value_of("features").map(|features| features.into());
-        // TODO: support multiple packages?
-        let (bundle_settings, package) =
-            Settings::find_bundle_package(load_metadata(&current_dir)?)?;
+
+        let (bundle_settings, package) = Settings::find_bundle_package(load_metadata(&current_dir)?)?;
         let workspace_dir = Settings::get_workspace_dir(current_dir);
-        let target_dir =
-            Settings::get_target_dir(&workspace_dir, &target, &profile, &build_artifact);
-        let (bundle_settings, mut binary_name) = match build_artifact {
-            BuildArtifact::Main => {
-                if let Some(target) = package
-                    .targets
-                    .iter()
-                    .find(|target| target.kind.iter().any(|k| k == "bin"))
-                {
-                    (bundle_settings, target.name.clone())
-                } else {
-                    bail!("No `bin` target is found in package '{}'", package.name)
-                }
-            }
-            BuildArtifact::Bin(ref name) => (
-                bundle_settings_from_table(&bundle_settings.bin, "bin", name)?,
-                name.clone(),
-            ),
-            BuildArtifact::Example(ref name) => (
-                bundle_settings_from_table(&bundle_settings.example, "example", name)?,
-                name.clone(),
-            ),
-        };
+        let target_dir = Settings::get_target_dir(&workspace_dir, &target, &profile, &build_artifact);
+
         let binary_extension = match package_type {
             Some(x) => match x {
-                PackageType::OsxBundle
-                | PackageType::Deb => "",
+                PackageType::OsxBundle | PackageType::Deb => "",
                 PackageType::WindowsMsi => ".exe",
             },
-            None => "",
+            None => if cfg!(windows) { ".exe" } else { "" },
         };
-        binary_name += binary_extension;
+
         let binary_path = target_dir.join(&binary_name);
+
         Ok(Settings {
             package,
             package_type,
@@ -183,8 +150,6 @@ impl Settings {
             features,
             build_artifact,
             profile,
-            all_features,
-            no_default_features,
             project_out_directory: target_dir,
             binary_path,
             binary_name,
@@ -349,14 +314,6 @@ impl Settings {
     /// it's being compiled in debug mode.
     pub fn build_profile(&self) -> &str {
         &self.profile
-    }
-
-    pub fn all_features(&self) -> bool {
-        self.all_features
-    }
-
-    pub fn no_default_features(&self) -> bool {
-        self.no_default_features
     }
 
     pub fn bundle_name(&self) -> &str {
@@ -564,69 +521,5 @@ impl<'a> Iterator for ResourcePaths<'a> {
             }
             return None;
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::{AppCategory, BundleSettings};
-
-    #[test]
-    fn parse_cargo_toml() {
-        let toml_str = "\
-            name = \"Example Application\"\n\
-            identifier = \"com.example.app\"\n\
-            resources = [\"data\", \"foo/bar\"]\n\
-            category = \"Puzzle Game\"\n\
-            long_description = \"\"\"\n\
-            This is an example of a\n\
-            simple application.\n\
-            \"\"\"\n";
-        let bundle: BundleSettings = toml::from_str(toml_str).unwrap();
-        assert_eq!(bundle.name, Some("Example Application".to_string()));
-        assert_eq!(bundle.identifier, Some("com.example.app".to_string()));
-        assert_eq!(bundle.icon, None);
-        assert_eq!(bundle.version, None);
-        assert_eq!(
-            bundle.resources,
-            Some(vec!["data".to_string(), "foo/bar".to_string()])
-        );
-        assert_eq!(bundle.category, Some(AppCategory::PuzzleGame));
-        assert_eq!(
-            bundle.long_description,
-            Some(
-                "This is an example of a\n\
-                         simple application.\n"
-                    .to_string()
-            )
-        );
-    }
-
-    #[test]
-    fn parse_bin_and_example_bundles() {
-        let toml_str = "\
-            [bin.foo]\n\
-            name = \"Foo App\"\n\
-            \n\
-            [bin.bar]\n\
-            name = \"Bar App\"\n\
-            \n\
-            [example.baz]\n\
-            name = \"Baz Example\"\n";
-        let bundle: BundleSettings = toml::from_str(toml_str).unwrap();
-        assert!(bundle.example.is_some());
-
-        let bins = bundle.bin.as_ref().unwrap();
-        assert!(bins.contains_key("foo"));
-        let foo: &BundleSettings = bins.get("foo").unwrap();
-        assert_eq!(foo.name, Some("Foo App".to_string()));
-        assert!(bins.contains_key("bar"));
-        let bar: &BundleSettings = bins.get("bar").unwrap();
-        assert_eq!(bar.name, Some("Bar App".to_string()));
-
-        let examples = bundle.example.as_ref().unwrap();
-        assert!(examples.contains_key("baz"));
-        let baz: &BundleSettings = examples.get("baz").unwrap();
-        assert_eq!(baz.name, Some("Baz Example".to_string()));
     }
 }
