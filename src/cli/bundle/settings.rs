@@ -1,22 +1,23 @@
-use super::category::AppCategory;
-use super::common::print_warning;
+// This codebase is a frking mess.
+use super::{category::AppCategory, common::print_warning};
 use cargo_metadata::{Metadata, MetadataCommand};
 use error_chain::bail;
 use serde::Deserialize;
 use serde_json::Value;
 use std::borrow::Cow;
-use std::collections::HashMap;
-use std::ffi::OsString;
+//use std::collections::HashMap;
+//use std::ffi::OsString;
 use std::fmt::Display;
 use std::path::{Path, PathBuf};
 use target_build_utils::TargetInfo;
+use std::ffi::OsString;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PackageType {
     OsxBundle,
     WindowsMsi,
     Deb,
-}
+} // We got OsxBundle, **WindowsMsi** & Deb... what?
 
 impl PackageType {
     pub fn from_short_name(name: &str) -> Option<PackageType> {
@@ -39,7 +40,7 @@ impl PackageType {
 
     pub fn all() -> &'static [PackageType] {
         ALL_PACKAGE_TYPES
-    }
+    } // remove this maybe?
 }
 
 const ALL_PACKAGE_TYPES: &[PackageType] = &[
@@ -52,7 +53,6 @@ const ALL_PACKAGE_TYPES: &[PackageType] = &[
 pub enum BuildArtifact {
     Main,
     Bin(String),
-    Example(String),
 }
 
 #[derive(Clone, Debug, Default, Deserialize)]
@@ -76,8 +76,8 @@ struct BundleSettings {
     osx_minimum_system_version: Option<String>,
     osx_url_schemes: Option<Vec<String>>,
     // Bundles for other binaries/examples:
-    bin: Option<HashMap<String, BundleSettings>>,
-    example: Option<HashMap<String, BundleSettings>>,
+    // bin: Option<HashMap<String, BundleSettings>>, // never used, gg- there's prob no need for this either way.
+    // example: Option<HashMap<String, BundleSettings>>, // removed support for examples
 }
 
 #[derive(Clone, Debug)]
@@ -105,9 +105,18 @@ fn load_metadata(dir: &Path) -> crate::cli::bundle::Result<Metadata> {
 
 impl Settings {
     pub fn new(current_dir: PathBuf) -> crate::cli::bundle::Result<Self> {
-        let package_type = None;
-        let profile = "release".to_string();
+        // Build the project first
+        let status = std::process::Command::new("cargo")
+            .args(["build", "--profile", "release", "--quiet"])
+            .status()?; // sometimes the stupid code works better than the good one
+
+        if !status.success() {
+            bail!("Failed to build project in the release profile");
+        }
+
+        let profile = "temp".to_string();
         let target = None;
+        let package_type = None;
         let features = None;
 
         let current_exe = std::env::current_exe()?;
@@ -117,29 +126,21 @@ impl Settings {
             .ok_or_else(|| "Could not determine binary name")?
             .to_string();
 
-        let build_artifact = if current_exe
-            .to_string_lossy()
-            .contains("/examples/")
-            || current_exe
-            .to_string_lossy()
-            .contains("\\examples\\")
-        {
-            BuildArtifact::Example(binary_name.clone())
-        } else {
-            BuildArtifact::Main
-        };
+        let build_artifact = BuildArtifact::Main;
 
         let (bundle_settings, package) = Settings::find_bundle_package(load_metadata(&current_dir)?)?;
-        let workspace_dir = Settings::get_workspace_dir(current_dir);
-        let target_dir = Settings::get_target_dir(&workspace_dir, &target, &profile, &build_artifact);
+        // let workspace_dir = Settings::get_workspace_dir(current_dir);
+        // let target_dir = Settings::get_target_dir(&workspace_dir, &target, &profile, &build_artifact);
+        // let target_dir = Settings::get_target_dir(&workspace_dir, &target, &profile);
+        let target_dir = Settings::get_target_dir(&current_dir, &target, &profile);
 
-        let binary_extension = match package_type {
-            Some(x) => match x {
-                PackageType::OsxBundle | PackageType::Deb => "",
-                PackageType::WindowsMsi => ".exe",
-            },
-            None => if cfg!(windows) { ".exe" } else { "" },
-        };
+        // let binary_extension = match package_type {
+        //     Some(x) => match x {
+        //         PackageType::OsxBundle | PackageType::Deb => "",
+        //         PackageType::WindowsMsi => ".exe",
+        //     },
+        //     None => if cfg!(windows) { ".exe" } else { "" },
+        // };
 
         let binary_path = target_dir.join(&binary_name);
 
@@ -148,35 +149,24 @@ impl Settings {
             package_type,
             target,
             features,
+            project_out_directory: target_dir, // Odd one out
             build_artifact,
             profile,
-            project_out_directory: target_dir,
             binary_path,
             binary_name,
             bundle_settings,
         })
     }
 
-    /*
-        The target_dir where binaries will be compiled to by cargo can vary:
-            - this directory is a member of a workspace project
-            - overridden by CARGO_TARGET_DIR environment variable
-            - specified in build.target-dir configuration key
-            - if the build is a 'release' or 'debug' build
-
-        This function determines where 'target' dir is and suffixes it with 'release' or 'debug'
-        to determine where the compiled binary will be located.
-    */
     fn get_target_dir(
-        project_root_dir: &Path,
+        project_dir: &Path,
         target: &Option<(String, TargetInfo)>,
         profile: &str,
-        build_artifact: &BuildArtifact,
     ) -> PathBuf {
         let mut cargo = std::process::Command::new(
             std::env::var_os("CARGO").unwrap_or_else(|| OsString::from("cargo")),
         );
-        cargo.args(["metadata", "--no-deps", "--format-version", "1"]);
+        cargo.args(["metadata", "--no-deps"]);
 
         let target_dir = cargo.output().ok().and_then(|output| {
             let json_string = String::from_utf8(output.stdout).ok()?;
@@ -184,16 +174,14 @@ impl Settings {
             Some(PathBuf::from(json.get("target_directory")?.as_str()?))
         });
 
-        let mut path = target_dir.unwrap_or(project_root_dir.join("target"));
+        let mut path = target_dir.unwrap_or(project_dir.join("target"));
 
         if let &Some((ref triple, _)) = target {
             path.push(triple);
         }
-        path.push(if profile == "dev" { "debug" } else { profile });
-        if let &BuildArtifact::Example(_) = build_artifact {
-            path.push("examples");
-        }
-        path
+
+        path.push(profile);
+        path.into()
     }
 
     /*
@@ -205,21 +193,9 @@ impl Settings {
             - Stop at the first one found.
             - If one is found before reaching "/" then this folder belongs to that parent workspace
     */
-    fn get_workspace_dir(current_dir: PathBuf) -> PathBuf {
-        let mut dir = current_dir.clone();
-        let set = load_metadata(&dir);
-        if set.is_ok() {
-            return dir;
-        }
-        while dir.pop() {
-            let set = load_metadata(&dir);
-            if set.is_ok() {
-                return dir;
-            }
-        }
 
-        // Nothing found walking up the file system, return the starting directory
-        current_dir
+    fn get_workspace_dir(metadata: Metadata) -> PathBuf {
+        metadata.workspace_root.clone().into()
     }
 
     fn find_bundle_package(
@@ -228,7 +204,7 @@ impl Settings {
         for package_id in metadata.workspace_members.iter() {
             let package = &metadata[package_id];
             if let Some(bundle) = package.metadata.get("bundle") {
-                let settings = serde_json::from_value::<BundleSettings>(bundle.clone())?;
+                let settings = serde_json::from_value::<BundleSettings>(bundle.clone())?; // DESERIALIZEEEEEEEEEE
                 return Ok((settings, package.clone()));
             }
         }
@@ -248,11 +224,11 @@ impl Settings {
     /// Returns the architecture for the binary being bundled (e.g. "arm" or
     /// "x86" or "x86_64").
     pub fn binary_arch(&self) -> &str {
-        if let Some((_, ref info)) = self.target {
-            info.target_arch()
-        } else {
+        // if let Some((_, ref info)) = self.target {
+        //     info.target_arch()
+        // } else {
             std::env::consts::ARCH
-        }
+        // }
     }
 
     /// Returns the file name of the binary being bundled.
@@ -330,9 +306,6 @@ impl Settings {
             match &self.build_artifact {
                 BuildArtifact::Main => "".into(),
                 BuildArtifact::Bin(name) => format!("{name}.{}", self.package.name).into(),
-                BuildArtifact::Example(name) => {
-                    format!("{name}.example.{}", self.package.name).into()
-                }
             }
         }
     }
@@ -438,21 +411,21 @@ impl Settings {
     }
 }
 
-fn bundle_settings_from_table(
-    opt_map: &Option<HashMap<String, BundleSettings>>,
-    map_name: &str,
-    bundle_name: &str,
-) -> crate::cli::bundle::Result<BundleSettings> {
-    if let Some(bundle_settings) = opt_map.as_ref().and_then(|map| map.get(bundle_name)) {
-        Ok(bundle_settings.clone())
-    } else {
-        print_warning(&format!(
-            "No [package.metadata.bundle.{}.{}] section in Cargo.toml",
-            map_name, bundle_name
-        ))?;
-        Ok(BundleSettings::default())
-    }
-}
+// fn bundle_settings_from_table(
+//     opt_map: &Option<HashMap<String, BundleSettings>>,
+//     map_name: &str,
+//     bundle_name: &str,
+// ) -> crate::cli::bundle::Result<BundleSettings> {
+//     if let Some(bundle_settings) = opt_map.as_ref().and_then(|map| map.get(bundle_name)) {
+//         Ok(bundle_settings.clone())
+//     } else {
+//         print_warning(&format!(
+//             "No [package.metadata.bundle.{}.{}] section in Cargo.toml",
+//             map_name, bundle_name
+//         ))?;
+//         Ok(BundleSettings::default())
+//     }
+// }
 
 pub struct ResourcePaths<'a> {
     pattern_iter: std::slice::Iter<'a, String>,

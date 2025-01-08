@@ -196,8 +196,7 @@ pub fn generate_icon_files(settings: &Settings, data_dir: &Path) -> crate::cli::
                 &base_dir,
                 settings.binary_name(),
                 sizes.clone(),
-            )
-            .unwrap();
+            )?;
             sizes.append(&mut new_sizes.to_owned())
         } else {
             let new_sizes = generate_icon_files_non_png(
@@ -205,8 +204,7 @@ pub fn generate_icon_files(settings: &Settings, data_dir: &Path) -> crate::cli::
                 &base_dir,
                 settings.binary_name(),
                 sizes.clone(),
-            )
-            .unwrap();
+            )?;
             sizes.append(&mut new_sizes.to_owned())
         }
     }

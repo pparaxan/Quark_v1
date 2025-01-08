@@ -24,7 +24,7 @@ pub fn build_http(quark: &mut Quark) -> Result<(), QuarkError> {
         }
     });
 
-    let uri = format!("http://{}/index.html", addr);
+    let uri = format!("https://{}/index.html", addr); // mv to https
     quark.webview.navigate(&uri);
     Ok(())
 }

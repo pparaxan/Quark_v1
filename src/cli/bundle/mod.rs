@@ -1,4 +1,4 @@
-use error_chain::*;
+use error_chain::error_chain;
 
 mod category;
 mod common;
@@ -11,9 +11,9 @@ pub use self::common::{print_error, print_finished};
 pub use self::settings::{BuildArtifact, PackageType, Settings};
 use self::linux::deb_bundle;
 use std::path::PathBuf;
-use crate::cli::parse_args;
 
-error_chain! {
+// #[allow(!(unexpected_cfgs))] // fix this
+error_chain! { // remove this dep? it's using an outdated version of `bitflags`; could fork but eh.
     foreign_links {
         Glob(glob::GlobError);
         GlobPattern(glob::PatternError);
@@ -38,17 +38,4 @@ pub fn bundle_project(settings: Settings) -> self::Result<Vec<PathBuf>> {
         });
     }
     Ok(paths)
-}
-
-pub fn bundle_executable() -> Result<Vec<PathBuf>> {
-    // Get current working directory
-    let current_dir = std::env::current_dir()?;
-
-    // Create bundle settings with release profile
-    let settings = self::Settings::new(current_dir)?;
-
-    // Bundle the project
-    let bundle_paths = self::bundle_project(settings)?;
-
-    Ok(bundle_paths)
 }

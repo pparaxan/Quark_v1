@@ -18,7 +18,7 @@
 // files into the `Contents` directory of the bundle.
 
 use super::common;
-use crate::cli::bundle::{ResultExt, Settings};
+use super::{ResultExt, Settings};
 
 use image::{self, GenericImage};
 use std::cmp::min;
@@ -28,7 +28,7 @@ use std::io::prelude::*;
 use std::io::{self, BufWriter};
 use std::path::{Path, PathBuf};
 
-pub fn bundle_project(settings: &Settings) -> crate::cli::bundle::Result<Vec<PathBuf>> {
+pub fn bundle_project(settings: &Settings) -> super::Result<Vec<PathBuf>> {
     let app_bundle_name = format!("{}.app", settings.bundle_name());
     common::print_bundling(&app_bundle_name)?;
     let app_bundle_path = settings
@@ -67,7 +67,7 @@ pub fn bundle_project(settings: &Settings) -> crate::cli::bundle::Result<Vec<Pat
     Ok(vec![app_bundle_path])
 }
 
-fn copy_binary_to_bundle(bundle_directory: &Path, settings: &Settings) -> crate::cli::bundle::Result<()> {
+fn copy_binary_to_bundle(bundle_directory: &Path, settings: &Settings) -> super::Result<()> {
     let dest_dir = bundle_directory.join("MacOS");
     common::copy_file(
         settings.binary_path(),
@@ -79,7 +79,7 @@ fn create_info_plist(
     bundle_dir: &Path,
     bundle_icon_file: Option<PathBuf>,
     settings: &Settings,
-) -> crate::cli::bundle::Result<()> {
+) -> super::Result<()> {
     let build_number = chrono::Utc::now().format("%Y%m%d.%H%M%S");
     let file = &mut common::create_file(&bundle_dir.join("Info.plist"))?;
     write!(
@@ -194,7 +194,7 @@ fn create_info_plist(
     Ok(())
 }
 
-fn copy_framework_from(dest_dir: &Path, framework: &str, src_dir: &Path) -> crate::cli::bundle::Result<bool> {
+fn copy_framework_from(dest_dir: &Path, framework: &str, src_dir: &Path) -> super::Result<bool> {
     let src_name = format!("{framework}.framework");
     let src_path = src_dir.join(&src_name);
     if src_path.exists() {
@@ -205,7 +205,7 @@ fn copy_framework_from(dest_dir: &Path, framework: &str, src_dir: &Path) -> crat
     }
 }
 
-fn copy_frameworks_to_bundle(bundle_directory: &Path, settings: &Settings) -> crate::cli::bundle::Result<()> {
+fn copy_frameworks_to_bundle(bundle_directory: &Path, settings: &Settings) -> super::Result<()> {
     let frameworks = settings.osx_frameworks();
     if frameworks.is_empty() {
         return Ok(());
@@ -255,7 +255,7 @@ fn copy_frameworks_to_bundle(bundle_directory: &Path, settings: &Settings) -> cr
 fn create_icns_file(
     resources_dir: &PathBuf,
     settings: &Settings,
-) -> crate::cli::bundle::Result<Option<PathBuf>> {
+) -> super::Result<Option<PathBuf>> {
     if settings.icon_files().count() == 0 {
         return Ok(None);
     }

@@ -1,4 +1,4 @@
-use hyaline::SizeHint;
+use libquark_hyaline::SizeHint;
 
 /// Defines the primary configuration for a Quark application.
 ///

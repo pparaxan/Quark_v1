@@ -1,12 +1,12 @@
-use crate::cli::bundle::ResultExt;
+use super::ResultExt;
 
 use std::ffi::OsStr;
 use std::fs::{self, File};
 use std::io::{self, BufWriter, Write};
 use std::path::{Component, Path, PathBuf};
 
-/// Returns true if the path has a filename indicating that it is a high-desity
-/// "retina" icon.  Specifically, returns true the the file stem ends with
+/// Returns true if the path has a filename indicating that it is a high-density
+/// "retina" icon. Specifically, returns true if the file stem ends with
 /// "@2x" (a convention specified by the [Apple developer docs](
 /// https://developer.apple.com/library/mac/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Optimizing/Optimizing.html)).
 pub fn is_retina<P: AsRef<Path>>(path: P) -> bool {
@@ -19,7 +19,7 @@ pub fn is_retina<P: AsRef<Path>>(path: P) -> bool {
 
 /// Creates a new file at the given path, creating any parent directories as
 /// needed.
-pub fn create_file(path: &Path) -> crate::cli::bundle::Result<BufWriter<File>> {
+pub fn create_file(path: &Path) -> super::Result<BufWriter<File>> {
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent)
             .chain_err(|| format!("Failed to create directory {parent:?}"))?;
@@ -51,7 +51,7 @@ fn symlink_file(src: &Path, dst: &Path) -> io::Result<()> {
 /// Copies a regular file from one path to another, creating any parent
 /// directories of the destination path as necessary.  Fails if the source path
 /// is a directory or doesn't exist.
-pub fn copy_file(from: &Path, to: &Path) -> crate::cli::bundle::Result<()> {
+pub fn copy_file(from: &Path, to: &Path) -> super::Result<()> {
     if !from.exists() {
         eprintln!("{:?} does not exist", from);
     }
@@ -68,7 +68,7 @@ pub fn copy_file(from: &Path, to: &Path) -> crate::cli::bundle::Result<()> {
 /// parent directories of the destination path as necessary.  Fails if the
 /// source path is not a directory or doesn't exist, or if the destination path
 /// already exists.
-pub fn copy_dir(from: &Path, to: &Path) -> crate::cli::bundle::Result<()> {
+pub fn copy_dir(from: &Path, to: &Path) -> super::Result<()> {
     if !from.exists() {
         eprintln!("{:?} does not exist", from);
     }
@@ -120,13 +120,13 @@ pub fn resource_relpath(path: &Path) -> PathBuf {
 
 /// Prints a message to stderr, in the same format that `cargo` uses,
 /// indicating that we are creating a bundle with the given filename.
-pub fn print_bundling(filename: &str) -> crate::cli::bundle::Result<()> {
+pub fn print_bundling(filename: &str) -> super::Result<()> {
     print_progress("Bundling", filename)
 }
 
 /// Prints a message to stderr, in the same format that `cargo` uses,
-/// indicating that we have finished the the given bundles.
-pub fn print_finished(output_paths: &Vec<PathBuf>) -> crate::cli::bundle::Result<()> {
+/// indicating that we have finished the given bundles.
+pub fn print_finished(output_paths: &Vec<PathBuf>) -> super::Result<()> {
     let pluralised = if output_paths.len() == 1 {
         "bundle"
     } else {
@@ -150,7 +150,7 @@ fn safe_term_attr<T: term::Terminal + ?Sized>(
     }
 }
 
-fn print_progress(step: &str, msg: &str) -> crate::cli::bundle::Result<()> {
+fn print_progress(step: &str, msg: &str) -> super::Result<()> {
     if let Some(mut output) = term::stderr() {
         safe_term_attr(&mut output, term::Attr::Bold)?;
         output.fg(term::color::GREEN)?;
@@ -169,7 +169,7 @@ fn print_progress(step: &str, msg: &str) -> crate::cli::bundle::Result<()> {
 }
 
 /// Prints a warning message to stderr, in the same format that `cargo` uses.
-pub fn print_warning(message: &str) -> crate::cli::bundle::Result<()> {
+pub fn print_warning(message: &str) -> super::Result<()> {
     if let Some(mut output) = term::stderr() {
         safe_term_attr(&mut output, term::Attr::Bold)?;
         output.fg(term::color::YELLOW)?;
@@ -188,7 +188,7 @@ pub fn print_warning(message: &str) -> crate::cli::bundle::Result<()> {
 }
 
 /// Prints an error to stderr, in the same format that `cargo` uses.
-pub fn print_error(error: &crate::cli::bundle::Error) -> crate::cli::bundle::Result<()> {
+pub fn print_error(error: &crate::cli::bundle::Error) -> super::Result<()> {
     if let Some(mut output) = term::stderr() {
         safe_term_attr(&mut output, term::Attr::Bold)?;
         output.fg(term::color::RED)?;

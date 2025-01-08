@@ -2,6 +2,7 @@ pub mod build_http;
 pub mod build_static;
 pub mod bundle;
 
+use std::path::PathBuf;
 use include_dir::{Dir, include_dir};
 
 static QUARKFOLDER: Dir = include_dir!("$CARGO_MANIFEST_DIR/src_quark");
@@ -32,7 +33,14 @@ pub fn parse_args() -> Args {
             }
             "--bundle" => {
                 parsed_args.bundle = true;
-                match bundle::bundle_executable() {
+                fn bundle_executable() -> self::bundle::Result<Vec<PathBuf>> {
+                    let current_dir = std::env::current_dir()?;
+                    let settings = self::bundle::Settings::new(current_dir)?;
+                    let bundle_paths = self::bundle::bundle_project(settings)?;
+
+                    Ok(bundle_paths)
+                }
+                match bundle_executable() {
                     Ok(paths) => {
                         println!("Successfully bundled application to:");
                         for path in paths {
