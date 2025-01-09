@@ -114,7 +114,7 @@ impl Settings {
             bail!("Failed to build project in the release profile");
         }
 
-        let profile = "temp".to_string();
+        let profile = "release".to_string(); // trust me, don't remove this
         let target = None;
         let package_type = None;
         let features = None;
@@ -129,18 +129,7 @@ impl Settings {
         let build_artifact = BuildArtifact::Main;
 
         let (bundle_settings, package) = Settings::find_bundle_package(load_metadata(&current_dir)?)?;
-        // let workspace_dir = Settings::get_workspace_dir(current_dir);
-        // let target_dir = Settings::get_target_dir(&workspace_dir, &target, &profile, &build_artifact);
-        // let target_dir = Settings::get_target_dir(&workspace_dir, &target, &profile);
-        let target_dir = Settings::get_target_dir(&current_dir, &target, &profile);
-
-        // let binary_extension = match package_type {
-        //     Some(x) => match x {
-        //         PackageType::OsxBundle | PackageType::Deb => "",
-        //         PackageType::WindowsMsi => ".exe",
-        //     },
-        //     None => if cfg!(windows) { ".exe" } else { "" },
-        // };
+        let target_dir = Settings::get_target_dir(&target, &profile);
 
         let binary_path = target_dir.join(&binary_name);
 
@@ -159,7 +148,6 @@ impl Settings {
     }
 
     fn get_target_dir(
-        project_dir: &Path,
         target: &Option<(String, TargetInfo)>,
         profile: &str,
     ) -> PathBuf {
@@ -174,7 +162,7 @@ impl Settings {
             Some(PathBuf::from(json.get("target_directory")?.as_str()?))
         });
 
-        let mut path = target_dir.unwrap_or(project_dir.join("target"));
+        let mut path = target_dir.unwrap(); // oh, that's why None didn't work- unwrap.
 
         if let &Some((ref triple, _)) = target {
             path.push(triple);
