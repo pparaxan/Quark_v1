@@ -93,7 +93,7 @@ pub fn copy_dir(from: &Path, to: &Path) -> super::Result<()> {
                 symlink_file(&target, &dest_path)?;
             }
         } else if entry.file_type().is_dir() {
-            fs::create_dir(dest_path)?;
+            fs::create_dir_all(dest_path)?;
         } else {
             fs::copy(entry.path(), dest_path)?;
         }
