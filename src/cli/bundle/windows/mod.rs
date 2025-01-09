@@ -65,7 +65,7 @@ struct CabinetInfo {
 }
 
 pub fn bundle_project(settings: &Settings) -> super::Result<Vec<PathBuf>> {
-    common::print_warning("MSI bundle support is still experimental.")?;
+    common::print_warning(".msi support is still very much in experimental.")?;
 
     let msi_name = format!("{}.msi", settings.bundle_name());
     common::print_bundling(&msi_name)?;
@@ -113,7 +113,7 @@ pub fn bundle_project(settings: &Settings) -> super::Result<Vec<PathBuf>> {
         .chain_err(|| "Failed to generate EventMapping table")?;
     create_text_style_table(&mut package, &cabinets)
         .chain_err(|| "Failed to generate TextStyle table")?;
-    // TODO: Create other needed tables.
+    // TODO: Create other needed tables, yeh
 
     // Create app icon:
     package.create_table(
