@@ -140,82 +140,45 @@ pub fn print_finished(output_paths: &Vec<PathBuf>) -> super::Result<()> {
     Ok(())
 }
 
-fn safe_term_attr<T: term::Terminal + ?Sized>(
-    output: &mut Box<T>,
-    attr: term::Attr,
-) -> term::Result<()> {
-    match output.supports_attr(attr) {
-        true => output.attr(attr),
-        false => Ok(()),
-    }
-}
+// fn safe_term_attr<T: term::Terminal + ?Sized>(
+//     output: &mut Box<T>,
+//     attr: term::Attr,
+// ) -> term::Result<()> {
+//     if output.supports_attr(attr) {
+//         output.attr(attr)
+//     } else {
+//         Ok(())
+//     }
+// }
 
 fn print_progress(step: &str, msg: &str) -> super::Result<()> {
-    if let Some(mut output) = term::stderr() {
-        safe_term_attr(&mut output, term::Attr::Bold)?;
-        output.fg(term::color::GREEN)?;
-        write!(output, "    {step}")?;
-        output.reset()?;
-        writeln!(output, " {msg}")?;
-        output.flush()?;
-        Ok(())
-    } else {
-        let mut output = io::stderr();
-        write!(output, "    {step}")?;
-        writeln!(output, " {msg}")?;
-        output.flush()?;
-        Ok(())
-    }
+    let mut output = io::stderr();
+    write!(output, "    \x1b[1;32m{step}")?; // Text color is green, bolded
+    writeln!(output, " \x1b[0m{msg}")?; // Text color is reverted
+    // output.flush()?;
+    Ok(())
 }
 
 /// Prints a warning message to stderr, in the same format that `cargo` uses.
 pub fn print_warning(message: &str) -> super::Result<()> {
-    if let Some(mut output) = term::stderr() {
-        safe_term_attr(&mut output, term::Attr::Bold)?;
-        output.fg(term::color::YELLOW)?;
-        write!(output, "warning:")?;
-        output.reset()?;
-        writeln!(output, " {message}")?;
-        output.flush()?;
-        Ok(())
-    } else {
-        let mut output = io::stderr();
-        write!(output, "warning:")?;
-        writeln!(output, " {message}")?;
-        output.flush()?;
-        Ok(())
-    }
+    let mut output = io::stderr();
+    write!(output, "\x1b[1;33mwarning:")?; // Text color is yellow, bolded
+    writeln!(output, " \x1b[0m{message}")?; // Text color is reverted
+    // output.flush()?;
+    Ok(())
 }
 
 /// Prints an error to stderr, in the same format that `cargo` uses.
 pub fn print_error(error: &crate::cli::bundle::Error) -> super::Result<()> {
-    if let Some(mut output) = term::stderr() {
-        safe_term_attr(&mut output, term::Attr::Bold)?;
-        output.fg(term::color::RED)?;
-        write!(output, "error:")?;
-        output.reset()?;
-        safe_term_attr(&mut output, term::Attr::Bold)?;
-        writeln!(output, " {error}")?;
-        output.reset()?;
-        for cause in error.iter().skip(1) {
-            writeln!(output, "  Caused by: {cause}")?;
-        }
-        if let Some(backtrace) = error.backtrace() {
-            writeln!(output, "{backtrace:?}")?;
-        }
-        output.flush()?;
-        Ok(())
-    } else {
-        let mut output = io::stderr();
-        write!(output, "error:")?;
-        writeln!(output, " {error}")?;
-        for cause in error.iter().skip(1) {
-            writeln!(output, "  Caused by: {cause}")?;
-        }
-        if let Some(backtrace) = error.backtrace() {
-            writeln!(output, "{backtrace:?}")?;
-        }
-        output.flush()?;
-        Ok(())
+    let mut output = io::stderr();
+    write!(output, "\x1b[1;31merror:")?; // Text color is red, bolded
+    writeln!(output, " \x1b[0m{error}")?; // Text color is reverted
+    for cause in error.iter().skip(1) {
+        writeln!(output, "  Caused by: {cause}")?;
     }
+    if let Some(backtrace) = error.backtrace() {
+        writeln!(output, "{backtrace:?}")?;
+    }
+    // output.flush()?;
+    Ok(())
 }
