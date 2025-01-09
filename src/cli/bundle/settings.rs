@@ -96,7 +96,7 @@ pub struct Settings {
 }
 
 /// Try to load `Cargo.toml` file in the specified directory
-fn load_metadata(dir: &Path) -> crate::cli::bundle::Result<Metadata> {
+fn load_metadata(dir: &Path) -> super::Result<Metadata> {
     let cargo_file_path = dir.join("Cargo.toml");
     Ok(MetadataCommand::new()
         .manifest_path(cargo_file_path)
@@ -104,7 +104,7 @@ fn load_metadata(dir: &Path) -> crate::cli::bundle::Result<Metadata> {
 }
 
 impl Settings {
-    pub fn new(current_dir: PathBuf) -> crate::cli::bundle::Result<Self> {
+    pub fn new(current_dir: PathBuf) -> super::Result<Self> {
         // Build the project first
         let status = std::process::Command::new("cargo")
             .args(["build", "--profile", "release", "--quiet"])
@@ -188,7 +188,7 @@ impl Settings {
 
     fn find_bundle_package(
         metadata: Metadata,
-    ) -> crate::cli::bundle::Result<(BundleSettings, cargo_metadata::Package)> {
+    ) -> super::Result<(BundleSettings, cargo_metadata::Package)> {
         for package_id in metadata.workspace_members.iter() {
             let package = &metadata[package_id];
             if let Some(bundle) = package.metadata.get("bundle") {
@@ -234,7 +234,7 @@ impl Settings {
     /// command-line, returns the native package type(s) for that target;
     /// otherwise, returns the native package type(s) for the host platform.
     /// Fails if the host/target's native package type is not supported.
-    pub fn package_types(&self) -> crate::cli::bundle::Result<Vec<PackageType>> {
+    pub fn package_types(&self) -> super::Result<Vec<PackageType>> {
         if let Some(package_type) = self.package_type {
             Ok(vec![package_type])
         } else {
@@ -403,7 +403,7 @@ impl Settings {
 //     opt_map: &Option<HashMap<String, BundleSettings>>,
 //     map_name: &str,
 //     bundle_name: &str,
-// ) -> crate::cli::bundle::Result<BundleSettings> {
+// ) -> super::Result<BundleSettings> {
 //     if let Some(bundle_settings) = opt_map.as_ref().and_then(|map| map.get(bundle_name)) {
 //         Ok(bundle_settings.clone())
 //     } else {
@@ -434,15 +434,15 @@ impl<'a> ResourcePaths<'a> {
 }
 
 impl<'a> Iterator for ResourcePaths<'a> {
-    type Item = crate::cli::bundle::Result<PathBuf>;
+    type Item = super::Result<PathBuf>;
 
-    fn next(&mut self) -> Option<crate::cli::bundle::Result<PathBuf>> {
+    fn next(&mut self) -> Option<super::Result<PathBuf>> {
         loop {
             if let Some(ref mut walk_entries) = self.walk_iter {
                 if let Some(entry) = walk_entries.next() {
                     let entry = match entry {
                         Ok(entry) => entry,
-                        Err(error) => return Some(Err(crate::cli::bundle::Error::from(error))),
+                        Err(error) => return Some(Err(super::Error::from(error))),
                     };
                     let path = entry.path();
                     if path.is_dir() {
@@ -456,7 +456,7 @@ impl<'a> Iterator for ResourcePaths<'a> {
                 if let Some(glob_result) = glob_paths.next() {
                     let path = match glob_result {
                         Ok(path) => path,
-                        Err(error) => return Some(Err(crate::cli::bundle::Error::from(error))),
+                        Err(error) => return Some(Err(super::Error::from(error))),
                     };
                     if path.is_dir() {
                         if self.allow_walk {
@@ -465,7 +465,7 @@ impl<'a> Iterator for ResourcePaths<'a> {
                             continue;
                         } else {
                             let msg = format!("{path:?} is a directory");
-                            return Some(Err(crate::cli::bundle::Error::from(msg)));
+                            return Some(Err(super::Error::from(msg)));
                         }
                     }
                     return Some(Ok(path));
@@ -475,7 +475,7 @@ impl<'a> Iterator for ResourcePaths<'a> {
             if let Some(pattern) = self.pattern_iter.next() {
                 let glob = match glob::glob(pattern) {
                     Ok(glob) => glob,
-                    Err(error) => return Some(Err(crate::cli::bundle::Error::from(error))),
+                    Err(error) => return Some(Err(super::Error::from(error))),
                 };
                 self.glob_iter = Some(glob);
                 continue;
