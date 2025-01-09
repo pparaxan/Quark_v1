@@ -12,16 +12,45 @@ version = "4.1.0"
 description = "A lightweight alternative to Electron."
 authors = ["Jaydon Nelson <xxdr@duck.com>"]
 license = "MIT"
-readme = "README_crates.io.md"
+readme = "README_crates.md"
 repository = "https://codeberg.org/pparaxan/Quark"
 edition = "2021"
 keywords = [ "web", "gui", "desktop" ]
 categories = [ "gui", "web-programming" ]
 
+[package.metadata.bundle]
+name = "quark"
+identifier = "com.xan.quark"
+icon = ["assets/bundle_images/icon*.png"]
+category = "DeveloperTool"
+short_description = "An example of a bundled application"
+long_description = "A trivial application that just displays a blank window with a title bar. It serves as an example of an application that can be bundled with cargo-bundle, as well as a test-case for cargo-bundle's support for bundling crate examples."
+
 [dependencies]
 libquark-hyaline = "1.0.0"
 include_dir = "0.7.4"
 tiny_http = "0.12.0"
+ar = "0.9.0"
+cab = "0.6.0"
+cargo_metadata = "0.19.1"
+chrono = "0.4.39"
+dirs = "5.0.1"
+error-chain = "0.12.4"
+glob = "0.3.2"
+icns = "0.3.1"
+image = "0.12"
+libflate = "2.1.0"
+md5 = "0.7.0"
+msi = "0.8.0"
+serde = "1.0.217"
+serde_json = "1.0.134"
+strsim = "0.11.1"
+tar = "0.4.43"
+target_build_utils = "0.3.1" # DEPRECATED: Use Cargo environment variables `CARGO_CFG_TARGET_*`
+term = "1.0.1"
+toml = "0.8.19"
+uuid = { version = "1.11.0", features = ["v5"] }
+walkdir = "2.5.0"
 
 [profile.release]
 panic = "abort"

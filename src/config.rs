@@ -72,7 +72,7 @@ impl QuarkConfig {
     /// Also see [`SizeHint`]
     ///
     // TODO: this docstring may not work. link to html resource later
-    /// [`SizeHint`]: hyaline::SizeHint
+    /// [`SizeHint`]: libquark_hyaline::SizeHint
     #[must_use]
     pub fn resizable(mut self, resizable: SizeHint) -> Self {
         self.resizable = resizable;

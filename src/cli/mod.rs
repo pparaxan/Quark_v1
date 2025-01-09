@@ -1,6 +1,8 @@
 pub mod build_http;
 pub mod build_static;
+pub mod bundle;
 
+use std::path::PathBuf;
 use include_dir::{Dir, include_dir};
 
 static QUARKFOLDER: Dir = include_dir!("$CARGO_MANIFEST_DIR/src_quark");
@@ -22,7 +24,7 @@ pub fn parse_args() -> Args {
             "--help" => {
                 println!("Usage: cargo run -- [OPTION]");
                 println!("--live          Start a live server with hot reload support");
-                println!("--bundle        Package your Quark application for your target [WIP]");
+                println!("--package       Package your Quark application for your target");
                 println!("--help          Display this help message and exit");
                 std::process::exit(0);
             }
@@ -30,8 +32,27 @@ pub fn parse_args() -> Args {
                 parsed_args.live = true;
             }
             "--bundle" => {
-                println!("Error: This argument isn't complete!");
-                std::process::exit(1);
+                parsed_args.bundle = true;
+                fn bundle_executable() -> self::bundle::Result<Vec<PathBuf>> {
+                    let current_dir = std::env::current_dir()?;
+                    let settings = self::bundle::Settings::new(current_dir)?;
+                    let bundle_paths = self::bundle::bundle_project(settings)?;
+
+                    Ok(bundle_paths)
+                }
+                match bundle_executable() {
+                    Ok(paths) => {
+                        println!("Successfully bundled application to:");
+                        for path in paths {
+                            println!("  {}", path.display());
+                        }
+                    }
+                    Err(e) => {
+                        let _ = bundle::print_error(&e);
+                        std::process::exit(1);
+                    }
+                }
+                std::process::exit(0);
             }
             other => {
                 eprintln!("'{other}' is an unknown argument silly. Use '--help' to list the commands.");
