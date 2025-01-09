@@ -30,10 +30,8 @@ impl Quark {
         let mut quark = Quark { webview, config };
 
         if args.live {
-            // quark.build_http()?;
             build_http(&mut quark)?;
         } else {
-            // quark.build_static()?;
             build_static(&mut quark)?;
         }
         Ok(quark)
@@ -52,5 +50,5 @@ impl Quark {
 
     pub fn run(mut self) {
         self.webview.run();
-    }
+    } // mmm x3
 }

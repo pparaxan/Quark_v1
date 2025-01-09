@@ -1,4 +1,4 @@
-<img width="100" height="120" align="left" src="assets/Logo/Quark.svg">
+<img width="100" height="120" align="left" src="assets/branding/Quark.svg">
 
 <a href="https://rust-lang.org" target="_blank"><img src="https://img.shields.io/badge/made%20in%20rust-000?style=for-the-badge&logo=rust&logoColor=white"/></a>
 <a href="https://discord.gg/S6cfRda2DU" target="_blank"><img src="https://img.shields.io/badge/discord%20server-5865F2?style=for-the-badge&logo=discord&logoColor=white"/></a>

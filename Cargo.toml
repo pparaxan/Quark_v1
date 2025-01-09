@@ -21,7 +21,7 @@ categories = [ "gui", "web-programming" ]
 [package.metadata.bundle]
 name = "quark"
 identifier = "com.xan.quark"
-icon = ["assets/Logo/png/icon*.png"]
+icon = ["assets/bundle_images/icon*.png"]
 category = "DeveloperTool"
 short_description = "An example of a bundled application"
 long_description = "A trivial application that just displays a blank window with a title bar. It serves as an example of an application that can be bundled with cargo-bundle, as well as a test-case for cargo-bundle's support for bundling crate examples."
