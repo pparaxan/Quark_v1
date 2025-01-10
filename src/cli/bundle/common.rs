@@ -29,21 +29,25 @@ pub fn create_file(path: &Path) -> super::Result<BufWriter<File>> {
 }
 
 fn symlink_dir(src: &Path, dst: &Path) -> io::Result<()> {
-    #[cfg(unix)] {
+    #[cfg(unix)]
+    {
         std::os::unix::fs::symlink(src, dst)
     }
 
-    #[cfg(windows)] {
+    #[cfg(windows)]
+    {
         std::os::windows::fs::symlink_dir(src, dst)
     }
 }
 
 fn symlink_file(src: &Path, dst: &Path) -> io::Result<()> {
-    #[cfg(unix)] {
+    #[cfg(unix)]
+    {
         std::os::unix::fs::symlink(src, dst)
     }
 
-    #[cfg(windows)] {
+    #[cfg(windows)]
+    {
         std::os::windows::fs::symlink_file(src, dst)
     }
 }

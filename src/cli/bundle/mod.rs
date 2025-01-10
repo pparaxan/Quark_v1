@@ -3,13 +3,13 @@ use error_chain::error_chain;
 mod category;
 mod common;
 mod linux;
-mod windows;
 mod macos;
 mod settings;
+mod windows;
 
 pub use self::common::{print_error, print_finished};
-pub use self::settings::{BuildArtifact, PackageType, Settings};
 use self::linux::deb_bundle;
+pub use self::settings::{BuildArtifact, PackageType, Settings};
 use std::path::PathBuf;
 
 // #[allow(!(unexpected_cfgs))] // fix this

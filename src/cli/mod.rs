@@ -2,8 +2,8 @@ pub mod build_http;
 pub mod build_static;
 pub mod bundle;
 
+use include_dir::{include_dir, Dir};
 use std::path::PathBuf;
-use include_dir::{Dir, include_dir};
 
 static QUARKFOLDER: Dir = include_dir!("$CARGO_MANIFEST_DIR/src_quark");
 
@@ -55,7 +55,9 @@ pub fn parse_args() -> Args {
                 std::process::exit(0);
             }
             other => {
-                eprintln!("'{other}' is an unknown argument silly. Use '--help' to list the commands.");
+                eprintln!(
+                    "'{other}' is an unknown argument silly. Use '--help' to list the commands."
+                );
                 std::process::exit(1);
             }
         }

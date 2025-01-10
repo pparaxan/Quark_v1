@@ -93,7 +93,6 @@ pub struct Settings {
     binary_path: PathBuf,
     binary_name: String,
     bundle_settings: BundleSettings,
-
 }
 
 /// Try to load `Cargo.toml` file in the specified directory
@@ -116,7 +115,7 @@ impl Settings {
         // }
 
         let profile = "release".to_string(); // trust me, don't remove this
-        // let target = None;
+                                             // let target = None;
         let package_type = None;
         let features = None;
 
@@ -129,7 +128,8 @@ impl Settings {
 
         let build_artifact = BuildArtifact::Main;
 
-        let (bundle_settings, package) = Settings::find_bundle_package(load_metadata(&current_dir)?)?;
+        let (bundle_settings, package) =
+            Settings::find_bundle_package(load_metadata(&current_dir)?)?;
         // let target_dir = Settings::get_target_dir(&target, &profile);
         let target_dir = Settings::get_target_dir(&profile);
 
@@ -213,7 +213,7 @@ impl Settings {
         // if let Some((_, ref info)) = self.target {
         //     info.target_arch()
         // } else {
-            std::env::consts::ARCH
+        std::env::consts::ARCH
         // }
     }
 
@@ -261,7 +261,10 @@ impl Settings {
             "macos" => Ok(vec![PackageType::OsxBundle]),
             "linux" => Ok(vec![PackageType::Deb]),
             "windows" => Ok(vec![PackageType::WindowsMsi]),
-            os => bail!("Your current operating system, '{}', isn't supported for packaging as of yet.", os),
+            os => bail!(
+                "Your current operating system, '{}', isn't supported for packaging as of yet.",
+                os
+            ),
         }
     }
 

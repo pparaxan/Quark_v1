@@ -1,6 +1,6 @@
-use crate::Quark;
-use crate::error::QuarkError;
 use crate::cli::QUARKFOLDER;
+use crate::error::QuarkError;
+use crate::Quark;
 use std::path::Path;
 
 pub fn build_static(quark: &mut Quark) -> Result<(), QuarkError> {

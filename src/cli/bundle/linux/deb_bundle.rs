@@ -19,6 +19,7 @@
 // generate postinst or prerm files.
 
 use crate::{
+    cli::bundle::ResultExt,
     cli::bundle::{
         common,
         linux::common::{
@@ -27,7 +28,6 @@ use crate::{
         },
         Settings,
     },
-    cli::bundle::ResultExt,
 };
 
 use std::io::{self, Write};

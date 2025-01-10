@@ -12,7 +12,10 @@ use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
 /// Generate the application desktop file and store it under the `data_dir`.
-pub fn generate_desktop_file(settings: &Settings, data_dir: &Path) -> crate::cli::bundle::Result<()> {
+pub fn generate_desktop_file(
+    settings: &Settings,
+    data_dir: &Path,
+) -> crate::cli::bundle::Result<()> {
     let bin_name = settings.binary_name();
     let desktop_file_name = format!("{}.desktop", bin_name);
     let desktop_file_path = data_dir
@@ -67,7 +70,10 @@ pub fn tar_and_gzip_dir<P: AsRef<Path>>(src_dir: P) -> crate::cli::bundle::Resul
 }
 
 /// Writes a tar file to the given writer containing the given directory.
-pub fn create_tar_from_dir<P: AsRef<Path>, W: Write>(src_dir: P, dest_file: W) -> crate::cli::bundle::Result<W> {
+pub fn create_tar_from_dir<P: AsRef<Path>, W: Write>(
+    src_dir: P,
+    dest_file: W,
+) -> crate::cli::bundle::Result<W> {
     let src_dir = src_dir.as_ref();
     let mut tar_builder = tar::Builder::new(dest_file);
     for entry in WalkDir::new(src_dir) {
@@ -90,7 +96,10 @@ pub fn create_tar_from_dir<P: AsRef<Path>, W: Write>(src_dir: P, dest_file: W) -
 
 /// Create an empty file at the given path, creating any parent directories as
 /// needed, then write `data` into the file.
-pub fn create_file_with_data<P: AsRef<Path>>(path: P, data: &str) -> crate::cli::bundle::Result<()> {
+pub fn create_file_with_data<P: AsRef<Path>>(
+    path: P,
+    data: &str,
+) -> crate::cli::bundle::Result<()> {
     let mut file = common::create_file(path.as_ref())?;
     file.write_all(data.as_bytes())?;
     file.flush()?;
