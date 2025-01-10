@@ -13,6 +13,8 @@ mod windows;
 pub use self::common::{print_error, print_finished};
 pub use self::settings::{BuildArtifact, PackageType, Settings};
 use std::path::PathBuf;
+#[cfg(target_os = "linux")]
+use super::bundle::linux::deb_bundle;
 
 // #[allow(!(unexpected_cfgs))] // fix this
 error_chain! { // remove this dep? it's using an outdated version of `bitflags`; could fork but eh.

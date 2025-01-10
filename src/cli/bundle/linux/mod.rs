@@ -1,2 +1,2 @@
 mod common;
-mod deb_bundle;
+pub mod deb_bundle;
