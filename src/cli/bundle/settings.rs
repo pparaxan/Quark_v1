@@ -1,4 +1,5 @@
 // This codebase is a frking mess.
+// omfg why did I push this into master branchhhhhhhhh
 use super::{category::AppCategory, common::print_warning};
 use cargo_metadata::{Metadata, MetadataCommand};
 use error_chain::bail;
@@ -6,11 +7,11 @@ use serde::Deserialize;
 use serde_json::Value;
 use std::borrow::Cow;
 //use std::collections::HashMap;
-//use std::ffi::OsString;
 use std::fmt::Display;
 use std::path::{Path, PathBuf};
-use target_build_utils::TargetInfo;
+// use target_build_utils::TargetInfo;
 use std::ffi::OsString;
+// use std::env::consts;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PackageType {
@@ -84,11 +85,11 @@ struct BundleSettings {
 pub struct Settings {
     package: cargo_metadata::Package,
     package_type: Option<PackageType>, // If `None`, use the default package type for this os
-    target: Option<(String, TargetInfo)>,
+    // target: Option<(String, TARGET_INFO)>, // Can't rust already do that already, like compile for multiple OSes?
     features: Option<String>,
     project_out_directory: PathBuf,
     build_artifact: BuildArtifact,
-    profile: String,
+    // profile: String,
     binary_path: PathBuf,
     binary_name: String,
     bundle_settings: BundleSettings,
@@ -106,16 +107,16 @@ fn load_metadata(dir: &Path) -> super::Result<Metadata> {
 impl Settings {
     pub fn new(current_dir: PathBuf) -> super::Result<Self> {
         // Build the project first
-        let status = std::process::Command::new("cargo")
-            .args(["build", "--profile", "release", "--quiet"])
+        let _status = std::process::Command::new("cargo")
+            .args(["build", "--profile", "release", "--quiet"]) // Need a better alternative
             .status()?; // sometimes the stupid code works better than the good one
 
-        if !status.success() {
-            bail!("Failed to build project in the release profile");
-        }
+        // if !status.success() {
+        //     super::print_error("Failed to build project in the release profile")?;
+        // }
 
         let profile = "release".to_string(); // trust me, don't remove this
-        let target = None;
+        // let target = None;
         let package_type = None;
         let features = None;
 
@@ -129,18 +130,19 @@ impl Settings {
         let build_artifact = BuildArtifact::Main;
 
         let (bundle_settings, package) = Settings::find_bundle_package(load_metadata(&current_dir)?)?;
-        let target_dir = Settings::get_target_dir(&target, &profile);
+        // let target_dir = Settings::get_target_dir(&target, &profile);
+        let target_dir = Settings::get_target_dir(&profile);
 
         let binary_path = target_dir.join(&binary_name);
 
         Ok(Settings {
             package,
             package_type,
-            target,
+            // target,
             features,
             project_out_directory: target_dir, // Odd one out
             build_artifact,
-            profile,
+            // profile,
             binary_path,
             binary_name,
             bundle_settings,
@@ -148,7 +150,7 @@ impl Settings {
     }
 
     fn get_target_dir(
-        target: &Option<(String, TargetInfo)>,
+        // target: &Option<(String, TARGET_INFO)>,
         profile: &str,
     ) -> PathBuf {
         let mut cargo = std::process::Command::new(
@@ -164,9 +166,9 @@ impl Settings {
 
         let mut path = target_dir.unwrap(); // oh, that's why None didn't work- unwrap.
 
-        if let &Some((ref triple, _)) = target {
-            path.push(triple);
-        }
+        // if let &Some((ref triple, _)) = target {
+        //     path.push(triple);
+        // }
 
         path.push(profile);
         path.into()
@@ -181,10 +183,6 @@ impl Settings {
             - Stop at the first one found.
             - If one is found before reaching "/" then this folder belongs to that parent workspace
     */
-
-    fn get_workspace_dir(metadata: Metadata) -> PathBuf {
-        metadata.workspace_root.clone().into()
-    }
 
     fn find_bundle_package(
         metadata: Metadata,
@@ -234,33 +232,48 @@ impl Settings {
     /// command-line, returns the native package type(s) for that target;
     /// otherwise, returns the native package type(s) for the host platform.
     /// Fails if the host/target's native package type is not supported.
+    // pub fn package_types(&self) -> super::Result<Vec<PackageType>> { // wip, i can't code
+    //     // if let Some(package_type) = self.package_type {
+    //         // Ok(vec![package_type]).expect("Your native operating system isn't supported yet to package.") // Remove me lmao, damn tho alot of commented code :pensive:
+    //         // return Ok(vec![self.package_type.expect("Your native operating system isn't supported yet to package.")]); // should I use `std::env::consts::OS` instead of this one? I dunno really
+    //     // } else {
+    //         // let target_os = if let Some((_, ref info)) = self.target {
+    //         //     info.target_os()
+    //         // } else {
+    //         // let target_os = if let Some((_, ref info)) = self {
+    //         //    std::env::consts::OS;
+    //         // };
+    //         // match target_os {
+    //         //     "macos" => Ok(vec![PackageType::OsxBundle]),
+    //         //     "linux" => Ok(vec![PackageType::Deb]),
+    //         //     "windows" => Ok(vec![PackageType::WindowsMsi]),
+    //         //     os => bail!("Your native operating system isn't supported yet to package.", os),
+    //         // }
+    //     // }
+    // }
     pub fn package_types(&self) -> super::Result<Vec<PackageType>> {
         if let Some(package_type) = self.package_type {
-            Ok(vec![package_type])
-        } else {
-            let target_os = if let Some((_, ref info)) = self.target {
-                info.target_os()
-            } else {
-                std::env::consts::OS
-            };
-            match target_os {
-                "macos" => Ok(vec![PackageType::OsxBundle]),
-                "linux" => Ok(vec![PackageType::Deb]),
-                "windows" => Ok(vec![PackageType::WindowsMsi]),
-                os => bail!("Native {} bundles not yet supported.", os),
-            }
+            return Ok(vec![package_type]);
+        }
+
+        let target_os = std::env::consts::OS;
+        match target_os {
+            "macos" => Ok(vec![PackageType::OsxBundle]),
+            "linux" => Ok(vec![PackageType::Deb]),
+            "windows" => Ok(vec![PackageType::WindowsMsi]),
+            os => bail!("Your current operating system, '{}', isn't supported for packaging as of yet.", os),
         }
     }
 
     /// If the bundle is being cross-compiled, returns the target triple string
     /// (e.g. `"x86_64-apple-darwin"`).  If the bundle is targeting the host
     /// environment, returns `None`.
-    pub fn target_triple(&self) -> Option<&str> {
-        match self.target {
-            Some((ref triple, _)) => Some(triple.as_str()),
-            None => None,
-        }
-    }
+    // pub fn target_triple(&self) -> Option<&str> {
+    //     match self.target {
+    //         Some((ref triple, _)) => Some(triple.as_str()),
+    //         None => None,
+    //     }
+    // } // Don't think it's worth it because .msi is Windows only iirc and whatever MacOS uses is MacOS only- you need xcode, so yeha maybe I should just deprecate this code
 
     pub fn features(&self) -> Option<&str> {
         match self.features {
@@ -274,11 +287,11 @@ impl Settings {
         &self.build_artifact
     }
 
-    /// Returns true if the bundle is being compiled in release mode, false if
-    /// it's being compiled in debug mode.
-    pub fn build_profile(&self) -> &str {
-        &self.profile
-    }
+    // /// Returns true if the bundle is being compiled in release mode, false if
+    // /// it's being compiled in debug mode.
+    // pub fn build_profile(&self) -> &str {
+    //     &self.profile
+    // }
 
     pub fn bundle_name(&self) -> &str {
         self.bundle_settings
@@ -374,7 +387,7 @@ impl Settings {
 
     pub fn linux_use_terminal(&self) -> Option<bool> {
         self.bundle_settings.linux_use_terminal
-    }
+    } // What about Windows and MacOS?
 
     pub fn linux_exec_args(&self) -> Option<&str> {
         self.bundle_settings.linux_exec_args.as_deref()

@@ -21,8 +21,7 @@ error_chain! { // remove this dep? it's using an outdated version of `bitflags`;
         Image(image::ImageError);
         Json(serde_json::Error);
         Metadata(cargo_metadata::Error);
-        Target(target_build_utils::Error);
-        Term(term::Error);
+        // Target(target_build_utils::Error);
         Toml(toml::de::Error);
         Walkdir(walkdir::Error);
     }
