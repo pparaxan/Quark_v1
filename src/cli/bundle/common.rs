@@ -1,5 +1,6 @@
 use super::ResultExt;
 
+#[cfg(target_os = "macos")]
 use std::ffi::OsStr;
 use std::fs::{self, File};
 use std::io::{self, BufWriter, Write};
@@ -9,6 +10,7 @@ use std::path::{Component, Path, PathBuf};
 /// "retina" icon. Specifically, returns true if the file stem ends with
 /// "@2x" (a convention specified by the [Apple developer docs](
 /// https://developer.apple.com/library/mac/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Optimizing/Optimizing.html)).
+#[cfg(target_os = "macos")]
 pub fn is_retina<P: AsRef<Path>>(path: P) -> bool {
     path.as_ref()
         .file_stem()

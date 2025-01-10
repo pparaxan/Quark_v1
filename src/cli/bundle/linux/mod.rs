@@ -1,2 +1,2 @@
 mod common;
-pub(crate) mod deb_bundle;
+mod deb_bundle;

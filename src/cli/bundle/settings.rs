@@ -18,7 +18,7 @@ pub enum PackageType {
     OsxBundle,
     WindowsMsi,
     Deb,
-} // We got OsxBundle, **WindowsMsi** & Deb... what?
+}
 
 impl PackageType {
     pub fn from_short_name(name: &str) -> Option<PackageType> {

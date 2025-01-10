@@ -2,13 +2,15 @@ use error_chain::error_chain;
 
 mod category;
 mod common;
+#[cfg(target_os = "linux")]
 mod linux;
+#[cfg(target_os = "macos")]
 mod macos;
 mod settings;
+#[cfg(target_os = "windows")]
 mod windows;
 
 pub use self::common::{print_error, print_finished};
-use self::linux::deb_bundle;
 pub use self::settings::{BuildArtifact, PackageType, Settings};
 use std::path::PathBuf;
 
@@ -31,9 +33,13 @@ pub fn bundle_project(settings: Settings) -> self::Result<Vec<PathBuf>> {
     let mut paths = Vec::new();
     for package_type in settings.package_types()? {
         paths.append(&mut match package_type {
+            #[cfg(target_os = "macos")]
             PackageType::OsxBundle => macos::bundle_project(&settings)?,
+            #[cfg(target_os = "windows")]
             PackageType::WindowsMsi => windows::bundle_project(&settings)?,
+            #[cfg(target_os = "linux")]
             PackageType::Deb => deb_bundle::bundle_project(&settings)?,
+            _ => Vec::new(),
         });
     }
     Ok(paths)
