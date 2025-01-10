@@ -1,9 +1,9 @@
 pub mod build_http;
 pub mod build_static;
+#[cfg(feature = "bundle")]
 pub mod bundle;
 
 use include_dir::{include_dir, Dir};
-use std::path::PathBuf;
 
 static QUARKFOLDER: Dir = include_dir!("$CARGO_MANIFEST_DIR/src_quark");
 
@@ -23,16 +23,18 @@ pub fn parse_args() -> Args {
         match args.as_str() {
             "--help" => {
                 println!("Usage: cargo run -- [OPTION]");
-                println!("--live          Start a live server with hot reload support");
-                println!("--package       Package your Quark application for your target");
-                println!("--help          Display this help message and exit");
+                println!("--live          Start a live server with hot reload support.");
+                println!("--bundle        Package your Quark application for your target.\n                You need the `bundle` feature enable.");
+                println!("--help          Display this help message and exit.");
                 std::process::exit(0);
             }
             "--live" => {
                 parsed_args.live = true;
             }
+            #[cfg(feature = "bundle")]
             "--bundle" => {
                 parsed_args.bundle = true;
+                use std::path::PathBuf;
                 fn bundle_executable() -> self::bundle::Result<Vec<PathBuf>> {
                     let current_dir = std::env::current_dir()?;
                     let settings = self::bundle::Settings::new(current_dir)?;
