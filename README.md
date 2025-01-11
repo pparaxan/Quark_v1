@@ -1,26 +1,34 @@
-<img width="100" height="120" align="left" src="assets/branding/Quark.svg">
+<div align="center">
+<h3></h3> <!-- gap between the title and the readme div, there's prob a better way but eh -->
+<img width="512" src="assets/branding/Quark_Full.svg">
 
-<a href="https://crates.io/crates/libquark" target="_blank"><img src="https://img.shields.io/crates/v/libquark?style=for-the-badge&logo=rust&logoColor=white&color=%23ffc933"/></a>
+<i>"Quarks are very small particles..."</i>
+
+<a href="https://codeberg.org/pparaxan/Quark/releases" target="_blank"><img src="https://img.shields.io/gitea/v/release/pparaxan/Quark?gitea_url=https%3A%2F%2Fcodeberg.org%2F&include_prereleases&sort=semver&display_name=release&date_order_by=published_at&style=for-the-badge&logo=codeberg&logoColor=white&color=%232185D0"/></a>
+<a href="https://crates.io/crates/libquark" target="_blank"><img src="https://img.shields.io/crates/size/libquark?style=for-the-badge&logo=rust&logoColor=white&color=%23ffc933"/></a>
 <a href="https://discord.gg/S6cfRda2DU" target="_blank"><img src="https://img.shields.io/badge/discord%20server-5865F2?style=for-the-badge&logo=discord&logoColor=white"/></a>
 <a href="https://pparaxan.codeberg.page/Quark" target="_blank"><img src="https://img.shields.io/badge/website-ffb4b4?style=for-the-badge&logo=Codeberg&logoColor=white"/></a>
-<a href="https://app.codacy.com/gh/pparaxan/Quark/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade" target="_blank"><img src="https://img.shields.io/codacy/grade/c71544bc2c6d45d1b20e4c1e9405e3f1?style=for-the-badge&logo=codacy&logoColor=white"/></a>
+</div>
 
-"Quarks are very small particles..."
-
----
-
-So, what exactly *is* Quark?
-
-Quark is a "do-it-yourself" framework designed to create lightweight applications by using the power of your system's webview with [Hyaline](https://codeberg.org/pparaxan/Hyaline).
+# Introduction
+Quark is a "do-it-yourself" framework designed to create fast and tiny applications for all major desktop platforms by using your system's webview.
 
 Developers can build their user interface using HTML, CSS, and JavaScript, paired with a high-performance Rust backend for speed and reliability.
 
-<h2>Getting Started</h2>
+# Features
+* `localhost` free
+* Built-in application bundler (via the `bundle` feature) to create app installer in formats like
+    * deb
+    * exe
 
-If you're ready to dive into making a Quark application, check out the official [documentation site](https://pparaxan.codeberg.page/Quark).
+And more soon to come!
 
-But the quickest way to get started is to install the [these dependencies](https://pparaxan.codeberg.page/Quark) and `git clone` this repository:
+# Platforms
 
-```sh
-git clone https://codeberg.org/pparaxan/QuarkApp
-```
+Quark supports distribution and development on the following platforms:
+
+| Platform          | Versions       |
+| ----------------- | -------------- |
+| Linux             | webkit2gtk 4.1 |
+| macOS             | -              | <!-- I don't have a macbook, heck I don't even know if Quark works on it :skull: -->
+| Windows           | 10+            |
