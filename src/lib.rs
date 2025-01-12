@@ -2,12 +2,13 @@ pub mod cli;
 pub mod config;
 pub mod error;
 pub mod prelude;
+pub mod webview;
 
 use crate::cli::build_http::*;
 use crate::cli::build_static::*;
 use config::QuarkConfig;
 use error::QuarkError;
-use libquark_hyaline::{Webview, WebviewBuilder};
+use crate::webview::{Webview, WebviewBuilder};
 
 #[allow(dead_code)]
 pub struct Quark {
