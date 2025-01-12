@@ -8,7 +8,7 @@ use crate::cli::build_http::*;
 use crate::cli::build_static::*;
 use config::QuarkConfig;
 use error::QuarkError;
-use libquark_hyaline::{Webview, WebviewBuilder};
+use crate::webview::{Webview, WebviewBuilder};
 
 #[allow(dead_code)]
 pub struct Quark {
