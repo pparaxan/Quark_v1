@@ -84,6 +84,10 @@ bundle = [
     "walkdir"
 ]
 
+[build-dependencies]
+cc = "1.2.3"
+pkg-config = "0.3.31"
+
 [profile.release]
 panic = "abort"
 codegen-units = 1

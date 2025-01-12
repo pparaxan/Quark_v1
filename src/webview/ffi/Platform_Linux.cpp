@@ -1,5 +1,5 @@
 #if defined(WEBVIEW_GTK)
-#include "webview.h"
+#include "lib.h"
 
 // #include <gtk/gtk.h> // can be a symlink to GTK v3 or GTK v4
 #include <gtk-3.0/gdk/gdk.h>

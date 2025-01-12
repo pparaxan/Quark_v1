@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <windows.h>
 
-#include "webview.h"
-#include "WebView2.h" // Install https://www.nuget.org/packages/microsoft.web.webview2
+#include "lib.h"
+#include "Platform_Windows-WebView2.h"
 
 #ifdef _MSC_VER
 #pragma comment(lib, "advapi32.lib")

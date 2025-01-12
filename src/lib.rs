@@ -2,6 +2,7 @@ pub mod cli;
 pub mod config;
 pub mod error;
 pub mod prelude;
+pub mod webview;
 
 use crate::cli::build_http::*;
 use crate::cli::build_static::*;

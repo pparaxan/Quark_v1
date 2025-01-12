@@ -1,5 +1,6 @@
 #if defined(WEBVIEW_COCOA)
 
+#include "lib.h"
 #include <CoreGraphics/CoreGraphics.h>
 #include <objc/NSObjCRuntime.h>
 #include <objc/objc-runtime.h>

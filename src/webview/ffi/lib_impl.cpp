@@ -1,4 +1,4 @@
-#include "webview.h"
+#include "lib.h"
 
 #if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 #define __BSD__
@@ -6,13 +6,13 @@
 
 #if defined(__APPLE__)
 #define WEBVIEW_COCOA
-#include "platform_darwin.c"
+#include "Platform_macOS.c"
 #elif defined(__linux__) || defined(__BSD__)
 #define WEBVIEW_GTK
-#include "platform_linux.cpp" // yes, BSD is under the Linux name for Quark, cope.
+#include "Platform_Linux.cpp" // yes, BSD is under the Linux name for Quark, cope.
 #elif defined(_WIN32) // Microsoft what is wrong with you?
 #define WEBVIEW_EDGE // Why is the webview edging?
-#include "platform_nt.cpp"
+#include "Platform_Windows.cpp"
 #endif
 
 extern "C" {
