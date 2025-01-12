@@ -9,7 +9,7 @@
 [package]
 name = "libquark"
 version = "4.1.0"
-description = "A lightweight alternative to Electron."
+description = "Develop lightweight, fast desktop applications with Quark."
 authors = ["Jaydon Nelson <xxdr@duck.com>"]
 license = "MIT"
 readme = "README_crates.md"
