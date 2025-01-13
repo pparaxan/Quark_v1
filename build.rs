@@ -34,7 +34,6 @@ fn main() {
 
         build
             .file("src/webview/ffi/Platform_Windows.cpp")
-            .flag("-m64")
             .flag_if_supported("/std:c++17")
             .flag_if_supported("/EHsc");
 
