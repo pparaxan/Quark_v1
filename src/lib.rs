@@ -6,9 +6,9 @@ pub mod webview;
 
 use crate::cli::build_http::*;
 use crate::cli::build_static::*;
+use crate::webview::{Webview, WebviewBuilder};
 use config::QuarkConfig;
 use error::QuarkError;
-use crate::webview::{Webview, WebviewBuilder};
 
 #[allow(dead_code)]
 pub struct Quark {

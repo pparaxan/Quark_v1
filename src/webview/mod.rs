@@ -1,11 +1,11 @@
-pub use builder::WebviewBuilder;
 pub use binding::{SizeHint, Webview, Window};
+pub use builder::WebviewBuilder;
 use std::os::raw::{c_char, c_int, c_ushort, c_void};
 pub type DispatchFn = extern "C" fn(webview: webview_t, arg: *mut c_void);
 pub type BindFn = extern "C" fn(seq: *const c_char, req: *const c_char, arg: *mut c_void);
 
-mod builder;
 mod binding;
+mod builder;
 
 #[allow(non_camel_case_types)]
 pub type webview_t = *mut c_void;

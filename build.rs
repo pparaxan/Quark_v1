@@ -12,7 +12,8 @@ fn main() {
         .cpp(true);
 
     if target.contains("apple") {
-        build.file("src/webview/ffi/Platform_macOS.c")
+        build
+            .file("src/webview/ffi/Platform_macOS.c")
             .flag("-x")
             .flag("objective-c");
 
@@ -37,7 +38,9 @@ fn main() {
             .flag_if_supported("/std:c++17")
             .flag_if_supported("/EHsc");
 
-        for &lib in &["advapi32", "ole32", "shell32", "shlwapi", "user32", "version"] {
+        for &lib in &[
+            "advapi32", "ole32", "shell32", "shlwapi", "user32", "version",
+        ] {
             println!("cargo:rustc-link-lib={}", lib);
         }
     } else {
