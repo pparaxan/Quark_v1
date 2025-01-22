@@ -94,7 +94,3 @@ lto = true
 incremental = false
 opt-level = "s"
 strip = true
-
-[[example]]
-name = "helloworld"
-path = "examples/helloworld.rs"
