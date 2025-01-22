@@ -10,9 +10,6 @@
 #elif defined(__linux__) || defined(__BSD__)
 #define WEBVIEW_GTK
 #include "Platform_Linux.cpp" // yes, BSD is under the Linux name for Quark, cope.
-#elif defined(_WIN32) // Microsoft what is wrong with you?
-#define WEBVIEW_EDGE // Why is the webview edging?
-#include "Platform_Windows.cpp"
 #endif
 
 extern "C" {

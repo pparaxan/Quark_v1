@@ -30,19 +30,6 @@ fn main() {
         }
 
         build.file("src/webview/ffi/Platform_Linux.cpp");
-    } else if target.contains("windows") {
-        build.define("UNICODE", None);
-
-        build
-            .file("src/webview/ffi/Platform_Windows.cpp")
-            .flag_if_supported("/std:c++17")
-            .flag_if_supported("/EHsc");
-
-        for &lib in &[
-            "advapi32", "ole32", "shell32", "shlwapi", "user32", "version",
-        ] {
-            println!("cargo:rustc-link-lib={}", lib);
-        }
     } else {
         panic!("Unsupported target, make a pull request (or issue) if you want support for this operating system.");
     }
