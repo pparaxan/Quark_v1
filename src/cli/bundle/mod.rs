@@ -7,8 +7,6 @@ mod linux;
 #[cfg(target_os = "macos")]
 mod macos;
 mod settings;
-#[cfg(target_os = "windows")]
-mod windows;
 
 pub use self::common::{print_error, print_finished};
 pub use self::settings::{BuildArtifact, PackageType, Settings};
@@ -37,8 +35,6 @@ pub fn bundle_project(settings: Settings) -> self::Result<Vec<PathBuf>> {
         paths.append(&mut match package_type {
             #[cfg(target_os = "macos")]
             PackageType::OsxBundle => macos::bundle_project(&settings)?,
-            #[cfg(target_os = "windows")]
-            PackageType::WindowsMsi => windows::bundle_project(&settings)?,
             #[cfg(target_os = "linux")]
             PackageType::Deb => deb_bundle::bundle_project(&settings)?,
             _ => Vec::new(),

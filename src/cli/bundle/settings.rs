@@ -16,7 +16,6 @@ use std::ffi::OsString;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PackageType {
     OsxBundle,
-    WindowsMsi,
     Deb,
 }
 
@@ -25,7 +24,6 @@ impl PackageType {
         // Other types we may eventually want to support: apk
         match name {
             "deb" => Some(PackageType::Deb),
-            "msi" => Some(PackageType::WindowsMsi),
             "osx" => Some(PackageType::OsxBundle),
             _ => None,
         }
@@ -34,7 +32,6 @@ impl PackageType {
     pub fn short_name(&self) -> &'static str {
         match *self {
             PackageType::Deb => "deb",
-            PackageType::WindowsMsi => "msi",
             PackageType::OsxBundle => "osx",
         }
     }
@@ -46,7 +43,6 @@ impl PackageType {
 
 const ALL_PACKAGE_TYPES: &[PackageType] = &[
     PackageType::Deb,
-    PackageType::WindowsMsi,
     PackageType::OsxBundle,
 ];
 
@@ -260,7 +256,6 @@ impl Settings {
         match target_os {
             "macos" => Ok(vec![PackageType::OsxBundle]),
             "linux" => Ok(vec![PackageType::Deb]),
-            "windows" => Ok(vec![PackageType::WindowsMsi]),
             os => bail!(
                 "Your current operating system, '{}', isn't supported for packaging as of yet.",
                 os

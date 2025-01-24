@@ -30,27 +30,11 @@ pub fn create_file(path: &Path) -> super::Result<BufWriter<File>> {
 }
 
 fn symlink_dir(src: &Path, dst: &Path) -> io::Result<()> {
-    #[cfg(unix)]
-    {
-        std::os::unix::fs::symlink(src, dst)
-    }
-
-    #[cfg(windows)]
-    {
-        std::os::windows::fs::symlink_dir(src, dst)
-    }
+    std::os::unix::fs::symlink(src, dst)
 }
 
 fn symlink_file(src: &Path, dst: &Path) -> io::Result<()> {
-    #[cfg(unix)]
-    {
-        std::os::unix::fs::symlink(src, dst)
-    }
-
-    #[cfg(windows)]
-    {
-        std::os::windows::fs::symlink_file(src, dst)
-    }
+    std::os::unix::fs::symlink(src, dst)
 }
 
 /// Copies a regular file from one path to another, creating any parent
